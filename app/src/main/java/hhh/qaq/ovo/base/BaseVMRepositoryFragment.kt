@@ -1,5 +1,6 @@
 package hhh.qaq.ovo.base
 
+import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,22 +16,25 @@ import androidx.lifecycle.ViewModelProvider
  */
 abstract class BaseVMRepositoryFragment<VM:BaseResViewModel<*>>(@LayoutRes private val layoutResId:Int):BaseFragment() {
     protected lateinit var mViewModel:VM
-    protected lateinit var mBinding:ViewDataBinding
-    abstract fun initViewModel():VM
+    protected lateinit var mRootView:View
+    abstract fun initViewModel(app:Application):VM
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val vm = initViewModel()
-        mViewModel = ViewModelProvider(this,BaseViewModelFactory(vm))[vm::class.java]
-        mBinding = DataBindingUtil.inflate(inflater,layoutResId,container,false)
-        mBinding.lifecycleOwner = this
-        mBinding.setVariable(mViewModel.id(),mViewModel)
-        mBinding.executePendingBindings()
-        return mBinding.root
+        val vm = initViewModel(mActivity.application)
+        mViewModel = ViewModelProvider(this,BaseViewModelFactory(mActivity.application,vm))[vm::class.java]
+        val binding:ViewDataBinding = DataBindingUtil.inflate(inflater,layoutResId,container,false)
+        binding.lifecycleOwner = this
+        binding.setVariable(mViewModel.id(),mViewModel)
+        binding.executePendingBindings()
+        mRootView = binding.root
+        return mRootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initData()
+        onAction()
+        mViewModel.setFragment(this)
         mViewModel.onBindViewModel()
     }
 
@@ -38,5 +42,7 @@ abstract class BaseVMRepositoryFragment<VM:BaseResViewModel<*>>(@LayoutRes priva
 
     }
     open fun initData() {}
+
+    open fun onAction(){}
 
 }

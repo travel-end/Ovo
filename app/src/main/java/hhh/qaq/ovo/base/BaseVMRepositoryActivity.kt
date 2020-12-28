@@ -1,5 +1,6 @@
 package hhh.qaq.ovo.base
 
+import android.app.Application
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
@@ -15,9 +16,9 @@ abstract class BaseVMRepositoryActivity<VM:BaseResViewModel<*>>(@LayoutRes priva
     protected lateinit var mBinding:ViewDataBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val vm = initViewModel()
+        val vm = initViewModel(application)
         mBinding = DataBindingUtil.setContentView(this,layoutResId)
-        mViewModel = ViewModelProvider(this,BaseViewModelFactory(vm))[vm::class.java]
+        mViewModel = ViewModelProvider(this,BaseViewModelFactory(application,vm))[vm::class.java]
         mBinding.lifecycleOwner = this
         mBinding.setVariable(mViewModel.id(),mViewModel)
         mBinding.executePendingBindings()
@@ -26,7 +27,7 @@ abstract class BaseVMRepositoryActivity<VM:BaseResViewModel<*>>(@LayoutRes priva
         initData()
         mViewModel.onBindViewModel()
     }
-    abstract fun initViewModel():VM
+    abstract fun initViewModel(app: Application):VM
 
     open fun initView() {
 

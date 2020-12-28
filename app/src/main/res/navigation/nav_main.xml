@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/nav_main_fragment">
+    <fragment
+        android:id="@+id/nav_main_fragment"
+        android:name="hhh.qaq.ovo.ui.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/act_main_to_search_main"
+            app:destination="@id/nav_search_main_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+<!--        <action-->
+<!--            android:id="@+id/to_local_song_fragment"-->
+<!--            app:destination="@id/local_song_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_search_main_fragment"
+        android:name="hhh.qaq.ovo.ui.search.SearchMainFragment"
+        android:label="searchMainFragment"
+        tools:layout="@layout/fragment_search_main">
+
+
+    </fragment>
+
+</navigation>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="title"
+            type="hhh.qaq.ovo.databinding.CommonTitleModel" />
+        <import type="android.view.View" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40">
+
+        <TextView
+            android:id="@+id/item_history_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{title.leftText}"
+            android:visibility="@{(title.leftText==null)?View.GONE:View.VISIBLE}"
+            android:layout_marginStart="@dimen/dp_16"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/item_common_end_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_color"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:text="@{title.rightText}"
+            android:onClick="@{()->title.rightAction.invoke()}"
+            android:visibility="@{(title.rightText==null)?View.GONE:View.VISIBLE}"
+            android:layout_gravity="center_vertical|end"
+            app:drawableEndCompat="@drawable/ic_arrow_right" />
+    </FrameLayout>
+</layout>
