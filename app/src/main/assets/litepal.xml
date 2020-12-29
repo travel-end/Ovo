@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="ovodb" />
+    <version value="1" />
+    <list>
+        <mapping class="hhh.qaq.ovo.model.HistoryTag" />
+        <mapping class="hhh.qaq.ovo.model.Music" />
+    </list>
+</litepal>

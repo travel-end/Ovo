@@ -11,6 +11,4 @@ import hhh.qaq.ovo.viewmodel.SearchHotViewModel
  */
 class SearchHotFragment:BaseVMRepositoryFragment<SearchHotViewModel>(R.layout.fragment_search_hot) {
     override fun initViewModel(app: Application)=SearchHotViewModel(app)
-
-
 }

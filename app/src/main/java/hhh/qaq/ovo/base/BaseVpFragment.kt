@@ -22,6 +22,18 @@ open class BaseVpFragment<VM:BaseResViewModel<*>>(@LayoutRes layoutResId:Int,cla
         super.initView()
         viewPager2 = mRootView.findViewById(R.id.viewPager2)
         tabLayout = mRootView.findViewById(R.id.tabLayout)
+
+    }
+    open fun initVpTitle(title: Array<String>?) {
+        this.vpTitles = title
+    }
+
+    open fun initVpFragments(fragments: Array<Fragment>?) {
+        this.vpFragments = fragments
+    }
+
+    override fun initData() {
+        super.initData()
         viewPager2.adapter = VpAdapter()
         mediator = TabLayoutMediator(tabLayout,viewPager2,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
@@ -30,13 +42,6 @@ open class BaseVpFragment<VM:BaseResViewModel<*>>(@LayoutRes layoutResId:Int,cla
                 }
             })
         mediator.attach()
-    }
-    open fun initVpTitle(title: Array<String>?) {
-        this.vpTitles = title
-    }
-
-    open fun initVpFragments(fragments: Array<Fragment>?) {
-        this.vpFragments = fragments
     }
 
     inner class VpAdapter : FragmentStateAdapter(this) {

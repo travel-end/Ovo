@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_search"
+    app:startDestination="@id/hot_search_fragment">
+
+    <fragment
+        android:id="@+id/hot_search_fragment"
+        android:name="hhh.qaq.ovo.ui.search.SearchHotFragment"
+        android:label="HotSearchFragment"
+        tools:layout="@layout/fragment_search_hot">
+        <action
+            android:id="@+id/hot_to_search_result_fragment"
+            app:destination="@id/result_search_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/result_search_fragment"
+        android:name="hhh.qaq.ovo.ui.search.SearchResultFragment"
+        android:label="ResultSearchFragment"
+        tools:layout="@layout/view_tab_vp">
+
+
+    </fragment>
+
+
+</navigation>

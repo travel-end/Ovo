@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.NavHostFragment
 import hhh.qaq.ovo.BR
@@ -23,6 +22,7 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
     val hasNav: MutableLiveData<Boolean> = MutableLiveData()
 
     private var mFragment: BaseFragment? = null
+    lateinit var mBundle: Bundle
 
     override fun id() = BR.vm
 
@@ -34,6 +34,9 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
         mFragment = fragment
     }
 
+    fun setBundle(bundle: Bundle){
+        mBundle= bundle
+    }
 
     protected fun request(block: suspend () -> Unit) {
         viewModelScope.launch {

@@ -8,4 +8,5 @@ import hhh.qaq.ovo.base.BaseViewModel
  * @Description
  */
 class MainActViewModel(app:Application):BaseViewModel(app) {
+
 }

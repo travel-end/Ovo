@@ -28,6 +28,11 @@ public abstract class TagAdapter<T> {
         mTagDatas = new ArrayList<T>(Arrays.asList(datas));
     }
 
+    public void setNewData(List<T> datas) {
+        mTagDatas = datas;
+        notifyDataChanged();
+    }
+
     interface OnDataChangedListener {
         void onChanged();
     }

@@ -45,4 +45,9 @@ abstract class BaseVMRepositoryFragment<VM:BaseResViewModel<*>>(@LayoutRes priva
 
     open fun onAction(){}
 
+    override fun getBundle(bundle: Bundle) {
+        super.getBundle(bundle)
+        mViewModel.setBundle(bundle)
+    }
+
 }

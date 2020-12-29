@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="vm"
             type="hhh.qaq.ovo.viewmodel.SearchHotViewModel" />
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -13,70 +15,58 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/item_history_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_12"
+            android:text="@string/recommend_search"
+            android:textColor="@color/black2"
+            android:textSize="@dimen/sp_16" />
+
+
+        <hhh.qaq.ovo.widget.flowlayout.TagFlowLayout
+            android:id="@+id/item_sh_flow_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:orientation="vertical">
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:visibility="@{vm.MShowTagLayout?View.VISIBLE:View.GONE}"
+            app:setTagLayoutAdapter="@{vm.MHotTagAdapter}"
+            app:setTagClickListener="@{vm.MTagClickListener}"/>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_32">
-
-                <TextView
-                    android:id="@+id/item_history_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/dp_16"
-                    android:text="@string/recommend_search"
-                    android:textColor="@color/black2"
-                    android:textSize="@dimen/sp_16" />
-
-                <ImageView
-                    android:id="@+id/item_history_end_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginTop="@dimen/dp_2"
-                    android:layout_marginEnd="@dimen/dp_16"
-                    android:src="@drawable/delete"
-                    android:visibility="invisible" />
-            </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40">
 
             <TextView
-                android:id="@+id/item_sh_tv_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginTop="@dimen/dp_4"
-                android:text="@string/no_search_history"
-                android:textColor="@color/text_color"
-                android:textSize="14sp"
-                android:visibility="gone" />
+                android:text="@string/search_history"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16" />
 
-            <hhh.qaq.ovo.widget.flowlayout.TagFlowLayout
-                android:id="@+id/item_sh_flow_layout"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_16"
+                android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:visibility="gone" />
-        </LinearLayout>
-        <include
-            layout="@layout/view_content_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="@{vm.mTitleVm}" />
+                android:onClick="@{vm.MDeleteSearchHistoryListener}"
+                android:src="@drawable/delete" />
+        </FrameLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_gradient_blue"
             android:layout_marginStart="@dimen/dp_14"
             android:layout_marginEnd="@dimen/dp_14"
-            android:layout_marginBottom="@dimen/dp_12">
+            android:layout_marginBottom="@dimen/dp_12"
+            android:background="@drawable/shape_gradient_blue"
+            android:orientation="vertical">
 
         </LinearLayout>
     </LinearLayout>
