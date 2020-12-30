@@ -22,6 +22,7 @@ open class BaseViewModelActivity<VM:BaseViewModel>(@LayoutRes private val layout
         mBinding.executePendingBindings()
         initView()
         initData()
+        onAction()
         mViewModel.onBindViewModel()
     }
 
@@ -32,5 +33,7 @@ open class BaseViewModelActivity<VM:BaseViewModel>(@LayoutRes private val layout
     open fun initData() {
 
     }
+
+    open fun onAction() {}
 
 }

@@ -1,4 +1,4 @@
-package hhh.qaq.ovo.ui
+package hhh.qaq.ovo.ui.main
 
 import android.app.Application
 import hhh.qaq.ovo.R

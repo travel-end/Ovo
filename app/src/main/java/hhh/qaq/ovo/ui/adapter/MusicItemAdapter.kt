@@ -15,5 +15,6 @@ class MusicItemAdapter<T:BaseItemViewModel>(@LayoutRes var layoutResId:Int, priv
     override fun getItemCount()=mData.size
     override fun onBindViewHolder(holder: RvViewHolder, position: Int) {
         holder.bind(mData[position])
+        mData[position].position = position
     }
 }

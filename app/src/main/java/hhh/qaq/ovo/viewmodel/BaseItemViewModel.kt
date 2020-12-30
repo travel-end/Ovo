@@ -16,4 +16,7 @@ open class BaseItemViewModel(app:Application):BaseViewModel(app),OnItemClickList
     }
 
     override fun id()=BR.item
+
+    var position:Int = 0
+
 }

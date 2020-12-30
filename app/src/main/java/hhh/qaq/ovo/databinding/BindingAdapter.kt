@@ -1,12 +1,21 @@
 package hhh.qaq.ovo.databinding
 
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import hhh.qaq.ovo.R
+import hhh.qaq.ovo.playmedia.PlayManager
 import hhh.qaq.ovo.ui.adapter.FlowTagAdapter
+import hhh.qaq.ovo.utils.hideKeyboards
+import hhh.qaq.ovo.utils.loadImg
 import hhh.qaq.ovo.utils.setDiffColor
+import hhh.qaq.ovo.utils.showKeyBoard
+import hhh.qaq.ovo.widget.ClearEditText
+import hhh.qaq.ovo.widget.PlayPauseView
 import hhh.qaq.ovo.widget.RippleView
 import hhh.qaq.ovo.widget.flowlayout.TagFlowLayout
 
@@ -15,23 +24,31 @@ import hhh.qaq.ovo.widget.flowlayout.TagFlowLayout
  * @Description
  */
 
+@BindingAdapter(value = ["loadImgUrl"], requireAll = false)
+fun loadImgUrl(iv: ImageView, url: String?) {
+    if (url.isNullOrBlank()) return
+    iv.loadImg(url, placeholder = R.drawable.disk, error = R.drawable.disk)
+}
 
 @BindingAdapter("setTagLayoutAdapter")
-fun setTagLayoutAdapter(tagLayout:TagFlowLayout,tagAdapter: FlowTagAdapter){
-    Log.e("JG","tagLayout:$tagLayout,tagAdapter:$tagAdapter")
+fun setTagLayoutAdapter(tagLayout: TagFlowLayout, tagAdapter: FlowTagAdapter) {
+    Log.e("JG", "tagLayout:$tagLayout,tagAdapter:$tagAdapter")
     if (tagLayout.adapter != tagAdapter) {
         tagLayout.adapter = tagAdapter
     }
 }
 
 @BindingAdapter("setTagClickListener")
-fun setTagClickListener(tagLayout:TagFlowLayout,tagClickListener: TagFlowLayout.OnTagClickListener?){
+fun setTagClickListener(
+    tagLayout: TagFlowLayout,
+    tagClickListener: TagFlowLayout.OnTagClickListener?
+) {
     if (tagClickListener == null) return
     tagLayout.setOnTagClickListener(tagClickListener)
 }
 
-@BindingAdapter(value = ["setLoadMoreListener"],requireAll = false)
-fun setLoadMoreListener(rv:RecyclerView,listener:(()->Unit)?) {
+@BindingAdapter(value = ["setLoadMoreListener"], requireAll = false)
+fun setLoadMoreListener(rv: RecyclerView, listener: (() -> Unit)?) {
     var isToTop = false
     rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -62,11 +79,37 @@ fun setLoadMoreListener(rv:RecyclerView,listener:(()->Unit)?) {
 }
 
 @BindingAdapter("setRippleViewCompleteListener")
-fun setRippleViewCompleteListener(rippleView: RippleView,listener:RippleView.OnRippleCompleteListener) {
+fun setRippleViewCompleteListener(
+    rippleView: RippleView,
+    listener: RippleView.OnRippleCompleteListener
+) {
     rippleView.setOnRippleCompleteListener(listener)
 }
 
-@BindingAdapter("setDiff")
-fun setDiffColor(tv:TextView,diff:DiffViewModel) {
-    tv.setDiffColor(diff.appointStr.get(),diff.originalStr.get())
+@BindingAdapter("setDiffColor")
+fun setDiffColor(tv: TextView, diff: DiffViewModel) {
+    tv.setDiffColor(diff.appointStr.get(), diff.originalStr.get())
 }
+
+@BindingAdapter("showKeyboard")
+fun showKeyboard(et: ClearEditText, showKb: Boolean) {
+    if (showKb) {
+        et.showKeyBoard()
+    } else {
+        et.context.hideKeyboards()
+    }
+}
+
+@BindingAdapter("isMusicPlaying")
+fun isMusicPlaying(playPauseView: PlayPauseView, isPlaying: Boolean) {
+    if (isPlaying && !playPauseView.isPlaying) {
+        playPauseView.play()
+    } else if (!isPlaying && playPauseView.isPlaying) {
+        playPauseView.pause()
+    }
+}
+
+//@BindingAdapter("setPlayControllerRvEvent")
+//fun setPlayControllerRvEvent(rv: RecyclerView) {
+//
+//}

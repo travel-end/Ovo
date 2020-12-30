@@ -28,4 +28,8 @@
     <style name="ThemeTabLayout">
         <item name="android:textSize">@dimen/sp_16</item>
     </style>
+    <style name="ThemeTranslucent" parent="Theme.Ovo">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

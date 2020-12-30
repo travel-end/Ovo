@@ -1,9 +1,10 @@
 package hhh.qaq.ovo.databinding
 
 import android.app.Application
-import android.view.View
 import androidx.databinding.ObservableField
 import hhh.qaq.ovo.model.Music
+import hhh.qaq.ovo.playmedia.PlayManager
+import hhh.qaq.ovo.utils.log
 import hhh.qaq.ovo.viewmodel.BaseItemViewModel
 import hhh.qaq.ovo.widget.RippleView
 
@@ -21,7 +22,13 @@ class MusicItemVM(app:Application,private val music: Music?=null,private val key
     var mDiffColor = ObservableField(DiffViewModel())
 
     var mRippleViewClick = RippleView.OnRippleCompleteListener {
-
+        "position:$position".log()
+        music?.let {
+            PlayManager.playOnline(music)
+        }
+    }
+    fun onMoreClick() {
+        "moreClick".log()
     }
 
     fun bindData() {

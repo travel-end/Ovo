@@ -19,7 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import hhh.qaq.ovo.OvoApp
+import hhh.qaq.ovo.app.OvoApp
 import kotlinx.coroutines.*
 import java.lang.reflect.ParameterizedType
 
@@ -52,7 +52,7 @@ fun Int.getResString() = OvoApp.getInstance().resources.getString(this)
 
 fun Int.getResString(size:Int) = OvoApp.getInstance().resources.getString(this,size)
 
-fun Int.getResDimen()=OvoApp.getInstance().resources.getDimension(this)
+fun Int.getResDimen()= OvoApp.getInstance().resources.getDimension(this)
 
 fun Int.getResColor() = ContextCompat.getColor(OvoApp.getInstance(),this)
 
@@ -168,11 +168,11 @@ fun EditText?.showKeyBoard() {
 
 }
 
-fun Activity.hideKeyboards() {
+fun Context.hideKeyboards() {
     // 当前焦点的 View
     val imm =
             this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
+    imm.hideSoftInputFromWindow((this as Activity).currentFocus?.windowToken, 0)
 }
 
 //是否是Android 8.0

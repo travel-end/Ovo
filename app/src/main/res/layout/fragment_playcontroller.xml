@@ -2,51 +2,60 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="vm"
+            type="hhh.qaq.ovo.viewmodel.PlayControllerViewModel" />
+        <import type="android.view.View" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48">
+        android:layout_height="@dimen/dp_70"
+        android:orientation="horizontal"
+        android:visibility="@{vm.MIsShowController?View.VISIBLE:View.GONE}"
+        android:background="@color/bgColorSecondary">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/play_controller_rv"
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/play_controller_rv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:clipToPadding="false"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
+        <include
+            layout="@layout/view_controller_rv"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/play_controller_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:rv="@{vm.MPlayControllerRv}" />
+
 
         <hhh.qaq.ovo.widget.PlayPauseView
             android:id="@+id/play_controller_view"
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_36"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:layout_marginStart="@dimen/dp_12"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/dp_10"
+            isMusicPlaying="@{vm.MIsPlaying}"
             app:anim_duration="200"
             app:bg_color="@color/translate"
             app:border_width="2dp"
             app:btn_color="@color/teal_200"
             app:gap_width="2dp"
             app:hasProgress="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/play_controller_iv_list"
-            app:layout_constraintTop_toTopOf="parent"
             app:loadingColor="@color/teal_200" />
 
-        <ImageView
-            android:id="@+id/play_controller_iv_list"
-            android:layout_width="@dimen/dp_21"
-            android:layout_height="@dimen/dp_21"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:src="@drawable/music_list"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <ImageView-->
+<!--            android:id="@+id/play_controller_iv_list"-->
+<!--            android:layout_width="@dimen/dp_21"-->
+<!--            android:layout_height="@dimen/dp_21"-->
+<!--            android:layout_marginEnd="@dimen/dp_16"-->
+<!--            android:src="@drawable/music_list"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

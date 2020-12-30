@@ -34,6 +34,14 @@ class SearchHotViewModel(app:Application):BaseResViewModel<SearchHotRepository>(
 //        "delete".log()
     }
 
+    fun navigation(text:String?) {
+        if (text.isNullOrBlank()) {
+            navigationUp()
+        } else {
+            nav(R.id.hot_to_search_result_fragment, Bundle().apply { putString(Constant.KEY_SEARCH_CONTENT,text) })
+        }
+    }
+
     override fun onBindViewModel() {
         super.onBindViewModel()
         request {

@@ -12,6 +12,7 @@ class SearchMainFragment:BaseViewModelFragment<SearchViewModel>(R.layout.fragmen
 
     override fun onAction() {
         super.onAction()
+
     }
 
 }

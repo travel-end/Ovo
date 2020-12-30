@@ -6,7 +6,7 @@
     app:startDestination="@id/nav_main_fragment">
     <fragment
         android:id="@+id/nav_main_fragment"
-        android:name="hhh.qaq.ovo.ui.MainFragment"
+        android:name="hhh.qaq.ovo.ui.main.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main">
         <action
@@ -16,13 +16,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-<!--        <action-->
-<!--            android:id="@+id/to_local_song_fragment"-->
-<!--            app:destination="@id/local_song_fragment"-->
-<!--            app:enterAnim="@anim/slide_in_right"-->
-<!--            app:exitAnim="@anim/slide_out_left"-->
-<!--            app:popEnterAnim="@anim/slide_in_left"-->
-<!--            app:popExitAnim="@anim/slide_out_right" />-->
     </fragment>
 
     <fragment

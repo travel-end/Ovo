@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.NavHostFragment
 import hhh.qaq.ovo.BR
 import hhh.qaq.ovo.listener.VariableId
+import hhh.qaq.ovo.utils.log
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -43,7 +44,7 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
             try {
                 block.invoke()
             } catch (e:Exception) {
-
+                "request exception:${e.message}".log()
             }
         }
     }
@@ -57,6 +58,16 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
                 nav.navigate(actionId)
             }
         }
+    }
+
+    fun navigationUp() {
+        mFragment?.let {
+            NavHostFragment.findNavController(it).navigateUp()
+        }
+    }
+
+    fun popBackup() {
+
     }
 
     fun startAct(clazz: Class<*>, vararg data: Pair<String, Any?>) {

@@ -1,5 +1,6 @@
-package hhh.qaq.ovo
+package hhh.qaq.ovo.ui.main
 
+import hhh.qaq.ovo.R
 import hhh.qaq.ovo.base.BaseViewModelActivity
 import hhh.qaq.ovo.viewmodel.MainActViewModel
 

@@ -5,5 +5,7 @@
     <list>
         <mapping class="hhh.qaq.ovo.model.HistoryTag" />
         <mapping class="hhh.qaq.ovo.model.Music" />
+        <mapping class="hhh.qaq.ovo.model.Playlist" />
+        <mapping class="hhh.qaq.ovo.model.MusicToPlaylist" />
     </list>
 </litepal>

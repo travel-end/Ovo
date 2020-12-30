@@ -1,4 +1,4 @@
-package hhh.qaq.ovo
+package hhh.qaq.ovo.app
 
 import androidx.multidex.MultiDexApplication
 import com.danikula.videocache.HttpProxyCacheServer
@@ -14,12 +14,13 @@ import java.io.File
 class OvoApp:MultiDexApplication() {
     private var proxy: HttpProxyCacheServer?=null
     companion object {
-        private var instances:OvoApp?=null
-        fun getInstance():OvoApp {
+        private var instances: OvoApp?=null
+        fun getInstance(): OvoApp {
             if (instances == null) {
                 synchronized(OvoApp::class.java) {
                     if (instances == null) {
-                        instances = OvoApp()
+                        instances =
+                            OvoApp()
                     }
                 }
             }
@@ -27,7 +28,8 @@ class OvoApp:MultiDexApplication() {
         }
         fun getProxy(): HttpProxyCacheServer {
             return if (getInstance().proxy == null) {
-                getInstance().proxy = getInstance().newProxy()
+                getInstance().proxy = getInstance()
+                    .newProxy()
                 getInstance().proxy!!
             } else {
                 getInstance().proxy!!
@@ -36,7 +38,7 @@ class OvoApp:MultiDexApplication() {
     }
     override fun onCreate() {
         super.onCreate()
-        instances= this
+        instances = this
         LitePal.initialize(this)
     }
     private fun newProxy(): HttpProxyCacheServer {

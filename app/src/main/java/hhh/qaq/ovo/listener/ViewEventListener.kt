@@ -1,11 +1,5 @@
 package hhh.qaq.ovo.listener
 
-import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import hhh.qaq.ovo.base.BaseFragment
-import hhh.qaq.ovo.base.BaseViewModel
-
 /**
  * @By Journey 2020/12/28
  * @Description

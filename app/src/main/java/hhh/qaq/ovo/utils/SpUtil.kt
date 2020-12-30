@@ -2,7 +2,7 @@ package hhh.qaq.ovo.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import hhh.qaq.ovo.OvoApp
+import hhh.qaq.ovo.app.OvoApp
 
 /**
  * @Description
