@@ -62,36 +62,22 @@ object MusicTransformUtil {
             }
             music.artist = artistNames
             music.artistId = artistIds
-            music.title = bean.songname
-//            music.coverUri = "${Constants.ALBUM_PIC}${bean.albummid}${Constants.JPG}"
-            music.coverUri = getAlbumPic(bean.albummid, bean.mainType, PIC_SIZE_NORMAL)
-//            music.coverBig = getAlbumPic(musicInfo.album?.cover, musicInfo.vendor, PIC_SIZE_BIG)
-//            music.coverSmall = getAlbumPic(musicInfo.album?.cover, musicInfo.vendor, PIC_SIZE_SMALL)
-            music.duration = bean.interval.toLong()
-            music.isOnline = true
-            music.album = bean.albumname
-            music.albumId = bean.albummid
-            music.type = bean.mainType
-            music.lyric = bean.lyric
         }
+        music.title = bean.songname
+        music.coverUri = getAlbumPic(bean.albummid, bean.mainType, PIC_SIZE_NORMAL)
+        music.duration = bean.interval.toLong()
+        music.isOnline = true
+        music.album = bean.albumname
+        music.albumId = bean.albummid
+        music.type = bean.mainType
+        music.lyric = bean.lyric
         return music
     }
 
     fun getAlbumPic(url: String?, type: String?, size: Int): String? {
-        println(url)
+//        println(url)
         return when (type) {
             Constant.QQ -> {
-//                when (size) {
-//                    PIC_SIZE_SMALL -> {
-//                        url?.replace("150x150", "90x90")
-//                    }
-//                    PIC_SIZE_NORMAL -> {
-//                        url?.replace("150x150", "150x150")
-//                    }
-//                    else -> {
-//                        url?.replace("150x150", "300x300")
-//                    }
-//                }
                 "${Constant.ALBUM_PIC}$url${Constant.JPG}"
             }
             Constant.XIAMI -> {

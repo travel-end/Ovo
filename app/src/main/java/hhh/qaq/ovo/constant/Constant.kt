@@ -64,4 +64,18 @@ object Constant {
     const val PLAYLIST_QQ_ID = "playlist_qq"
     //虾米歌单
     const val PLAYLIST_XIA_MI_ID = "playlist_xm"
+
+
+    /*截图屏幕宽高*/
+    private const val BASE_SCREEN_WIDTH = 1080.0.toFloat()
+    private const val BASE_SCREEN_HEIGHT = 1920.0.toFloat()
+
+    /*唱盘比例*/
+    val SCALE_DISC_SIZE = (803.0 / BASE_SCREEN_WIDTH).toFloat()
+    val SCALE_DISC_MARGIN_TOP = 190 / BASE_SCREEN_HEIGHT
+
+    /*专辑图片比例*/
+    val SCALE_MUSIC_PIC_SIZE = (533.0 / BASE_SCREEN_WIDTH).toFloat()
+
+    val SCALE_MUSIC_PIC_SIZE2 = (733.0 / BASE_SCREEN_WIDTH).toFloat()
 }

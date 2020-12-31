@@ -23,7 +23,7 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
     val hasNav: MutableLiveData<Boolean> = MutableLiveData()
 
     private var mFragment: BaseFragment? = null
-    lateinit var mBundle: Bundle
+    var mBundle: Bundle?=null
 
     override fun id() = BR.vm
 

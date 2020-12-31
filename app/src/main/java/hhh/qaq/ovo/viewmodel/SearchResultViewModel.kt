@@ -48,7 +48,7 @@ class SearchMusicViewModel(app: Application) :
     }
 
     private fun requestServer() {
-        keyText = mBundle.getString(Constant.KEY_SEARCH_CONTENT)
+        keyText = mBundle?.getString(Constant.KEY_SEARCH_CONTENT)
         if (!keyText.isNullOrBlank()) {
             request {
                 val result = repository.searchKeyMusic(keyText!!, pageOffset).data?.song?.list

@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import hhh.qaq.ovo.R
+import hhh.qaq.ovo.constant.Constant
 import hhh.qaq.ovo.model.Music
 
 /**
@@ -59,7 +60,11 @@ fun loadImgOfReady(
 fun loadBigImageView(context: Context?, music: Music?, callBack: ((Bitmap) -> Unit)?) {
     if (music == null) return
     if (context == null) return
-    val url = MusicTransformUtil.getAlbumPic(music.coverUri, music.type, MusicTransformUtil.PIC_SIZE_BIG)
+    val url = if (music.type==Constant.QQ) {
+        music.coverUri
+    } else {
+        MusicTransformUtil.getAlbumPic(music.coverUri, music.type, MusicTransformUtil.PIC_SIZE_BIG)
+    }
     Glide.with(context)
         .asBitmap()
         .load(url ?: R.drawable.ic_default_cover)
@@ -70,9 +75,7 @@ fun loadBigImageView(context: Context?, music: Music?, callBack: ((Bitmap) -> Un
 
             }
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                if (callBack != null && resource != null) {
-                    callBack.invoke(resource)
-                }
+                callBack?.invoke(resource)
             }
         })
 

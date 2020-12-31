@@ -1,5 +1,6 @@
 package hhh.qaq.ovo.databinding
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,6 +19,7 @@ import hhh.qaq.ovo.widget.ClearEditText
 import hhh.qaq.ovo.widget.PlayPauseView
 import hhh.qaq.ovo.widget.RippleView
 import hhh.qaq.ovo.widget.flowlayout.TagFlowLayout
+import hhh.qaq.ovo.widget.lrc.LrcView
 
 /**
  * @By Journey 2020/12/28
@@ -109,7 +111,24 @@ fun isMusicPlaying(playPauseView: PlayPauseView, isPlaying: Boolean) {
     }
 }
 
-//@BindingAdapter("setPlayControllerRvEvent")
-//fun setPlayControllerRvEvent(rv: RecyclerView) {
-//
+//@BindingAdapter("isImageSelected")
+//fun isImageSelected(iv: ImageView,isSelected:Boolean) {
+//    iv.isSelected = isSelected
 //}
+
+@BindingAdapter("setImageDrawable")
+fun setImageDrawable(iv: ImageView,drawable: Drawable) {
+    iv.setImageDrawable(drawable)
+}
+
+@BindingAdapter("loadLyric")
+fun loadLyric(lrc:LrcView,lyric:String) {
+    lrc.loadLrc(lyric)
+}
+
+@BindingAdapter("updateLyricProgress")
+fun updateLyricProgress(lrc: LrcView,progress:Long) {
+    if (lrc.hasLrc()) {
+        lrc.updateTime(progress)
+    }
+}

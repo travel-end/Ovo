@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lrc="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="hhh.qaq.ovo.viewmodel.PlayerLyricViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <hhh.qaq.ovo.widget.lrc.LrcView
+            android:id="@+id/lrc_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_14"
+            loadLyric="@{vm.lyricObservable}"
+            lrc:lrcAnimationDuration="1000"
+            lrc:lrcCurrentTextColor="@color/white"
+            lrc:lrcDividerHeight="24dp"
+            lrc:lrcNormalTextColor="@color/white_50p"
+            lrc:lrcPadding="40dp"
+            lrc:lrcTextSize="16sp"
+            lrc:lrcLabel=""
+            lrc:lrcTimelineColor="@color/white_50p"
+            lrc:lrcTimelineTextColor="#CCFFFFFF" />
+
+    </FrameLayout>
+</layout>

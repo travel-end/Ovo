@@ -24,8 +24,6 @@ class PlayControllerViewModel(app: Application) :
     private val mControllerAdapter = MusicItemAdapter(R.layout.item_bottom_music, mData)
     var mPlayControllerRv = RvControllerViewModel(app).apply {
         mAdapterObservable.set(mControllerAdapter)
-//        mRvEventListener = {
-//        }
     }
 
     override fun onBindViewModel() {

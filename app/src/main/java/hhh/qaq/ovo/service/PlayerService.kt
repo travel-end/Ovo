@@ -467,7 +467,6 @@ class PlayerService : Service() {
                     if (!isNetworkAvailable(this)) {
                         "${R.string.net_error}".toast()
                     } else {
-                        // TODO: 2020/12/30
                         mPlayingMusic = MusicApi.getMusicPlayUrl(mPlayingMusic)
                         val playUri = mPlayingMusic?.uri
                         "获取播放地址：uri:$playUri".log()

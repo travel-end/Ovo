@@ -3,6 +3,7 @@ package hhh.qaq.ovo.databinding
 import android.app.Application
 import androidx.databinding.ObservableField
 import hhh.qaq.ovo.model.Music
+import hhh.qaq.ovo.ui.player.PlayerActivity
 import hhh.qaq.ovo.utils.isNotNullOrEmpty
 import hhh.qaq.ovo.utils.log
 import hhh.qaq.ovo.viewmodel.BaseItemViewModel
@@ -25,6 +26,7 @@ class PlayControllerVM(app: Application, private val music: Music?=null):BaseIte
     override fun onItemClick() {
         super.onItemClick()
         "${music?.title}".log()
+        startAct(PlayerActivity::class.java)
     }
 
     fun setMusicCover() {

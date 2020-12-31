@@ -22,9 +22,10 @@ class MusicItemVM(app:Application,private val music: Music?=null,private val key
     var mDiffColor = ObservableField(DiffViewModel())
 
     var mRippleViewClick = RippleView.OnRippleCompleteListener {
-        "position:$position".log()
+        "position:$position ,url:${music?.coverUri}".log()
         music?.let {
             PlayManager.playOnline(music)
+
         }
     }
     fun onMoreClick() {

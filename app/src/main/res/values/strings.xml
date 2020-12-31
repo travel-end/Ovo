@@ -71,7 +71,6 @@
     <string name="singer">歌手</string>
     <string name="hot_songs">热歌精选</string>
     <string name="song_style">我的风格</string>
-    <string name="book_recommend">每日推书</string>
     <string name="poetry_and_song">诗＆歌</string>
     <string name="single_song_recommend">单曲推荐</string>
     <string name="change_range">换一批</string>
@@ -96,6 +95,7 @@
     <string name="woman">女歌手</string>
     <string name="other_singer">其他歌手</string>
     <string name="hot_singer">热门歌手</string>
+    <string name="all_singer">全部歌手</string>
     <string name="search_history">搜索历史</string>
     <string name="recommend_search">推荐搜索</string>
     <string name="hot_search">热门搜索</string>
@@ -107,6 +107,7 @@
     <string name="to_login">立即登录</string>
     <string name="public_time">发行于</string>
     <string name="today_recommend">推荐</string>
+    <string name="listener_fly">随心听</string>
     <string name="created_songList">创建的歌单</string>
     <string name="my_love_songs">我喜欢的音乐</string>
     <string name="mime_music">我的音乐</string>
@@ -118,6 +119,7 @@
     <string name="recommend_singer">推\n荐\n歌\n手</string>
     <string name="search">搜索</string>
     <string name="unknown_singer">未知歌手</string>
+    <string name="find_all">查看全部</string>
     <string name="unknown">未知</string>
     <string name="play_time_start">00:00</string>
     <string name="play_mode">%1$s("%2$d")</string>
