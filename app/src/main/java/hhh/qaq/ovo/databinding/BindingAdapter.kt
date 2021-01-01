@@ -3,6 +3,7 @@ package hhh.qaq.ovo.databinding
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,6 +49,12 @@ fun setTagClickListener(
     if (tagClickListener == null) return
     tagLayout.setOnTagClickListener(tagClickListener)
 }
+
+//@BindingAdapter("setOnSeekBarChangeListener")
+//fun setOnSeekBarChangeListener(seekBar: SeekBar,listener:SeekBar.OnSeekBarChangeListener?) {
+//    if (listener==null) return
+//    seekBar.setOnSeekBarChangeListener(listener)
+//}
 
 @BindingAdapter(value = ["setLoadMoreListener"], requireAll = false)
 fun setLoadMoreListener(rv: RecyclerView, listener: (() -> Unit)?) {

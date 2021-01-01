@@ -698,7 +698,7 @@ class PlayerService : Service() {
 
     fun seekTo(pos: Int, isInit: Boolean) {
         "pos:$pos".log()
-        if (mPlayer != null && mPlayer.isInitialized && mPlayingMusic != null) {
+        if (mPlayer.isInitialized && mPlayingMusic != null) {
             mPlayer.seek(pos)
         } else if (isInit) {
             // TODO: 2020/12/5

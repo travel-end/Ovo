@@ -76,9 +76,9 @@
                     android:max="@{vm.MTotalDuration}"
                     android:maxHeight="1.5dp"
                     android:minHeight="1.5dp"
-                    android:progress="@{vm.MPlaySeekBarProgress}"
+                    android:progress="@={vm.MPlaySeekBarProgress}"
                     android:progressDrawable="@drawable/play_progress_bar"
-                    android:secondaryProgress="0"
+                    android:secondaryProgress="@{vm.MSecondProgress}"
                     android:thumb="@drawable/white_dot" />
 
                 <TextView
@@ -124,6 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{()->vm.playOrPause()}"
                     android:src="@{vm.MIsMusicPlaying?@drawable/ic_play_btn_pause:@drawable/play_btn_play}" />
 
                 <ImageView

@@ -106,7 +106,7 @@ class MusicPlayerEngine(service: PlayerService) : MediaPlayer.OnErrorListener,
     /*获取播放时长，getDuration只能在prepared之后才能调用，否则会报-38错误*/
     val duration get() = if (mIsPrepared) mMediaPlayer.duration else 0
 
-    /*获取播放进度*/
+    /*获取播放进度 ms*/
     fun getCurrentPosition(): Int {
         return try {
             mMediaPlayer.currentPosition
@@ -116,6 +116,7 @@ class MusicPlayerEngine(service: PlayerService) : MediaPlayer.OnErrorListener,
     }
 
     fun seek(whereto: Int) {
+        "whereto:$whereto".log()
         mMediaPlayer.seekTo(whereto)
     }
 
@@ -161,6 +162,7 @@ class MusicPlayerEngine(service: PlayerService) : MediaPlayer.OnErrorListener,
     }
 
     override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
+        "percent=$percent".log()
         val msg = mHandler?.obtainMessage(PlayConstant.PREPARE_ASYNC_UPDATE, percent)
         if (msg != null) {
             mHandler?.sendMessage(msg)

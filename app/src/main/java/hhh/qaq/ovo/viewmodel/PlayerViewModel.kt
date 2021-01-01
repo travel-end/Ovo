@@ -29,10 +29,15 @@ class PlayerViewModel(app: Application) : BaseViewModel(app) {
     var mIsMusicPlaying = ObservableBoolean()
     var mBgDrawable = ObservableField<Drawable>(R.drawable.shape_gradient_blue.getDrawable())
     var isPlaying = PlayManager.isPlaying()
-    var mTotalDuration = ObservableField<Int>(0)
+    var mTotalDuration = ObservableField(0)
     var mTotalTextDuration = ObservableField<String>(R.string.play_time_start.getResString())
-    var mPlaySeekBarProgress = ObservableField<Int>(0)
+    var mPlaySeekBarProgress = ObservableField(0)
     var mPlayCurrentTextProgress = ObservableField<String>(R.string.play_time_start.getResString())
+    var mSecondProgress = ObservableField(0)
+
+    fun playOrPause() {
+        PlayManager.playPause()
+    }
 
     fun setPlayingMusicInfo(music: Music?) {
         mIsMusicPlaying.set(isPlaying)
@@ -40,7 +45,15 @@ class PlayerViewModel(app: Application) : BaseViewModel(app) {
             mMusicName.set(music.title)
             mMusicSinger.set(music.artist)
             mIsLovedMusic.set(music.isLove)
+            setProgressBarMax(music.duration)
+            if (!music.isOnline) {
+                mSecondProgress.set(music.duration.toInt())
+            }
         }
+    }
+
+    fun setPlayBtnStatus(isPlaying:Boolean) {
+        mIsMusicPlaying.set(isPlaying)
     }
 
     fun setPlayBgDrawable(bitmap: Bitmap?) {
@@ -54,13 +67,17 @@ class PlayerViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
-    fun setProgressBarMax(max: Int) {
-        mTotalDuration.set(max)
-        mTotalTextDuration.set(StringUtil.formatProgress(max.toLong()))
+    private fun setProgressBarMax(max: Long) {
+        mTotalDuration.set(max.toInt())
+        mTotalTextDuration.set(StringUtil.formatProgress(max))
     }
 
-    fun updatePlayProgress(progress: Long) {
-        mPlaySeekBarProgress.set(progress.toInt())
-        mPlayCurrentTextProgress.set(StringUtil.formatProgress(progress))
+    fun setSecondaryProgress(progress: Int) {
+        mSecondProgress.set(progress)
+    }
+
+    fun updatePlayProgress(progress: Int) {
+        mPlaySeekBarProgress.set(progress)
+        mPlayCurrentTextProgress.set(StringUtil.formatProgress(progress.toLong()))
     }
 }

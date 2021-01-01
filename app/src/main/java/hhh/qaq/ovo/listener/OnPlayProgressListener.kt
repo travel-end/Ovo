@@ -6,4 +6,5 @@ package hhh.qaq.ovo.listener
  */
 interface OnPlayProgressListener {
     fun onProgressUpdate(position:Int,duration:Int)
+//    fun onBufferingUpdate(percent:Int)
 }
