@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
@@ -8,7 +9,6 @@
     </data>
 
     <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -86,6 +86,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/dp_8"
                         android:layout_weight="1"
+                        android:onClick="@{()->vm.gotoLocalMusics()}"
                         android:background="@drawable/shape_white_bg_large">
 
                         <ImageView
@@ -115,8 +116,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_12"
-                            android:layout_marginTop="@dimen/dp_8"
-                            android:text="@string/default_num"
+                            android:layout_marginTop="4dp"
+                            android:text="@{vm.MLocalMusicNum}"
                             android:textColor="@color/text_color"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@id/main_frg_iv_local_music"
@@ -159,7 +160,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_12"
                             android:layout_marginTop="@dimen/dp_8"
-                            android:text="@string/default_num"
+                            android:text="@{vm.MHistoryMusicNum}"
                             android:textColor="@color/text_color"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@id/main_frg_iv_recent_music"
@@ -211,7 +212,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_12"
                             android:layout_marginTop="@dimen/dp_8"
-                            android:text="@string/default_num"
+                            android:text="@{vm.MDownloadedMusicNum}"
                             android:textColor="@color/text_color"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@id/main_frg_iv_download_music"
@@ -253,7 +254,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_12"
                             android:layout_marginTop="@dimen/dp_8"
-                            android:text="@string/default_num"
+                            android:text="@{vm.MCollectedMusicNum}"
                             android:textColor="@color/text_color"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@id/main_frg_iv_loved_music"

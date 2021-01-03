@@ -1,4 +1,4 @@
-package hhh.qaq.ovo.net
+package hhh.qaq.ovo.data
 
 import com.google.gson.GsonBuilder
 import hhh.qaq.ovo.constant.Constant

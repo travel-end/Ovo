@@ -1,4 +1,4 @@
-package hhh.qaq.ovo.net
+package hhh.qaq.ovo.data
 
 import com.cyl.musicapi.BaseApiImpl
 import hhh.qaq.ovo.constant.Constant

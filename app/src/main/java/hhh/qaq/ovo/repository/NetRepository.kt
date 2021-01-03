@@ -1,8 +1,8 @@
 package hhh.qaq.ovo.repository
 
 import hhh.qaq.ovo.base.BaseRepository
-import hhh.qaq.ovo.net.ApiService
-import hhh.qaq.ovo.net.RetrofitClient
+import hhh.qaq.ovo.data.ApiService
+import hhh.qaq.ovo.data.RetrofitClient
 
 /**
  * @By Journey 2020/12/25

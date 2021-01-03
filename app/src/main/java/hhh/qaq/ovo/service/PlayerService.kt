@@ -23,7 +23,8 @@ import hhh.qaq.ovo.event.PlaylistEvent
 import hhh.qaq.ovo.event.StatusChangedEvent
 import hhh.qaq.ovo.listener.OnPlayProgressListener
 import hhh.qaq.ovo.model.Music
-import hhh.qaq.ovo.net.MusicApi
+import hhh.qaq.ovo.data.MusicApi
+import hhh.qaq.ovo.data.db.SongOperator
 import hhh.qaq.ovo.playmedia.*
 import hhh.qaq.ovo.ui.player.PlayerActivity
 import hhh.qaq.ovo.utils.*
@@ -559,8 +560,7 @@ class PlayerService : Service() {
     fun reloadPlayQueue() {
         mPlayQueue.clear()
         mHistoryPos.clear()
-        // TODO: 2020/12/30
-//        mPlayQueue = PlayQueueLoader.getPlayQueue()
+        mPlayQueue = SongOperator.getPlayQueue().toMutableList()
         mPlayingPos = SpUtil.getInt(Constant.KEY_PLAY_POSITION)
         if (mPlayingPos >= 0 && mPlayingPos < mPlayQueue.size) {
             mPlayingMusic = mPlayQueue[mPlayingPos]
@@ -572,24 +572,22 @@ class PlayerService : Service() {
     }
 
     private fun saveHistory() {
-        // TODO: 2020/12/30
-//        mPlayingMusic?.let {
-//            PlayHistoryLoader.addSongToHistory(it)
-//            savePlayQueue(false)
-//        }
+        mPlayingMusic?.let {
+            SongOperator.addToHistoryMusic(it)
+            savePlayQueue(false)
+        }
     }
 
     // 保存播放队列
     private fun savePlayQueue(full: Boolean) {
-        // TODO: 2020/12/30
-//        if (full) {
-//            PlayQueueLoader.updateQueue(mPlayQueue)
-//        }
-//        if (mPlayingMusic != null) {
-//            SpUtil.saveValue(Constant.KEY_MUSIC_ID, mPlayingMusic!!.mid ?: "")
-//        }
-//        SpUtil.saveValue(Constant.KEY_PLAY_POSITION, mPlayingPos)
-//        SpUtil.saveValue(Constant.KEY_POSITION, getCurrentPosition())
+        if (full) {
+            SongOperator.addMusicToQueue(mPlayQueue)
+        }
+        if (mPlayingMusic != null) {
+            SpUtil.saveValue(Constant.KEY_MUSIC_ID, mPlayingMusic!!.mid ?: "")
+        }
+        SpUtil.saveValue(Constant.KEY_PLAY_POSITION, mPlayingPos)
+        SpUtil.saveValue(Constant.KEY_POSITION, getCurrentPosition())
     }
 
     fun setPlayQueue(playQueue: List<Music>) {

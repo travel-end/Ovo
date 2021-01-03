@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="hhh.qaq.ovo.databinding.NormalPlaylistVM" />
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <hhh.qaq.ovo.widget.RippleView
+            android:id="@+id/ripple_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:setRippleViewCompleteListener="@{item.MRippleViewClickListener}"
+            app:rv_centered="true"
+            app:rv_color="@color/grayLight2"
+            app:rv_rippleDuration="220">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dp_0"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingEnd="@dimen/dp_10">
+
+                <View
+                    android:id="@+id/v_playing"
+                    android:layout_width="4dp"
+                    android:layout_height="0dp"
+                    android:background="@color/teal_200"
+                    android:contentDescription="@null"
+                    android:visibility="@{item.MIsPlaying?View.VISIBLE:View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/item_search_song_list_tv_song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:maxLines="1"
+                    android:textColor="@color/black2"
+                    android:textSize="15sp"
+                    android:text="@{item.MMusicName}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/item_search_song_list_iv_downloaded"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_14"
+                    android:layout_marginStart="@dimen/dp_14"
+                    android:layout_marginTop="@dimen/dp_3"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:src="@drawable/ok"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_search_song_list_tv_song_name" />
+
+                <TextView
+                    android:id="@+id/item_search_song_list_tv_song_singer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_3"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/item_search_song_list_iv_downloaded"
+                    app:layout_constraintTop_toBottomOf="@id/item_search_song_list_tv_song_name"
+                    android:text="@{item.MMusicSinger}" />
+
+                <TextView
+                    android:id="@+id/item_search_song_list_tv_song_album"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginTop="@dimen/dp_3"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:maxLines="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@id/item_search_song_list_tv_song_singer"
+                    app:layout_constraintTop_toBottomOf="@id/item_search_song_list_tv_song_name"
+                    android:text="@{item.MMusicAlbumName}" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginStart="@dimen/dp_14"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:background="@color/colorGrayNormal2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_search_song_list_tv_song_album" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </hhh.qaq.ovo.widget.RippleView>
+
+        <ImageView
+            android:id="@+id/item_search_song_list_iv_more"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:onClick="@{()->item.onMoreClick()}"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_three_point" />
+    </LinearLayout>
+</layout>
+

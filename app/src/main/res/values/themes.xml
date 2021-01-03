@@ -25,6 +25,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/dp_10</item>
     </style>
+    <style name="ThemeClubToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>
     <style name="ThemeTabLayout">
         <item name="android:textSize">@dimen/sp_16</item>
     </style>

@@ -1,4 +1,4 @@
-package hhh.qaq.ovo.net
+package hhh.qaq.ovo.data
 
 import hhh.qaq.ovo.constant.Constant
 import hhh.qaq.ovo.model.*

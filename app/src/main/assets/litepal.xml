@@ -7,5 +7,6 @@
         <mapping class="hhh.qaq.ovo.model.Music" />
         <mapping class="hhh.qaq.ovo.model.Playlist" />
         <mapping class="hhh.qaq.ovo.model.MusicToPlaylist" />
+        <mapping class="hhh.qaq.ovo.model.TasksManagerModel" />
     </list>
 </litepal>
