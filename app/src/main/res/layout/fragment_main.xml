@@ -130,6 +130,7 @@
                         android:layout_height="@dimen/dp_76"
                         android:layout_marginStart="@dimen/dp_8"
                         android:layout_weight="1"
+                        android:onClick="@{()->vm.gotoHistoryMusics()}"
                         android:background="@drawable/shape_white_bg_large">
 
                         <ImageView

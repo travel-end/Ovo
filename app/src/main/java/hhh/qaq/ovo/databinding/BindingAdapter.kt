@@ -118,8 +118,8 @@ fun isMusicPlaying(playPauseView: PlayPauseView, isPlaying: Boolean) {
     }
 }
 
-//@BindingAdapter("isImageSelected")
-//fun isImageSelected(iv: ImageView,isSelected:Boolean) {
+//@BindingAdapter("setPausePlayViewProgress")
+//fun setPausePlayViewProgress(playPauseView: PlayPauseView,isSelected:Boolean) {
 //    iv.isSelected = isSelected
 //}
 

@@ -17,8 +17,8 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/act_main_to_local_music_fragment"
-            app:destination="@id/nav_search_main_fragment"
+            android:id="@+id/act_main_to_normal_music_fragment"
+            app:destination="@id/nav_normal_musics_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -34,8 +34,8 @@
 
     </fragment>
     <fragment
-        android:id="@+id/nav_local_musics_fragment"
-        android:name="hhh.qaq.ovo.ui.playlist.LocalMusicsFragment"
+        android:id="@+id/nav_normal_musics_fragment"
+        android:name="hhh.qaq.ovo.ui.playlist.NormalMusicsFragment"
         android:label="LocalMusicsFragment"
         tools:layout="@layout/fragment_normal_play_list">
 

@@ -6,6 +6,7 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import hhh.qaq.ovo.constant.Constant
 import hhh.qaq.ovo.model.Music
+import hhh.qaq.ovo.model.Playlist
 import hhh.qaq.ovo.model.TasksManagerModel
 import hhh.qaq.ovo.utils.execute
 import hhh.qaq.ovo.utils.getLocalSongCover
@@ -32,9 +33,14 @@ object SongOperator {
     }
 
     // 获取播放历史音乐
-    fun getHistoryMusic():MutableList<Music> {
-        return DaoLitePal.getMusicList(Constant.PLAYLIST_HISTORY_ID, "updateDate desc")
+    fun getHistoryPlayList():Playlist {
+        return DaoLitePal.getPlayList(Constant.PLAYLIST_HISTORY_ID)
     }
+    // 获取播放历史音乐
+    fun getHistoryMusic():MutableList<Music> {
+        return DaoLitePal.getMusicList(Constant.PLAYLIST_HISTORY_ID,"updateDate desc")
+    }
+
 
     // 获取收藏的歌曲
     fun getCollectedMusics():MutableList<Music> {
@@ -137,7 +143,6 @@ object SongOperator {
                     val albumId = cursor.getString(7)
                     val path = cursor.getString(8)
                     val coverUri = getLocalSongCover(context, albumId)
-                    "本地音乐封面：$coverUri".log()
                     val music = Music()
                     music.type = Constant.LOCAL
                     music.isOnline = false

@@ -35,8 +35,7 @@ class PlayerActivity :
     var mIsDraggingSeekBar=false
     override fun initView() {
         super.initView()
-        PlayerService.setOnUpdateProgressListener(this)
-        PlayerService.getInstance().updatePlayProgress()
+        PlayerService.addProgressListener(this)
         mViewPager2 = findViewById(R.id.playerViewPager)
         mBottomOpView = findViewById(R.id.bottomOpView)
         mDetailView = findViewById(R.id.detailView)
@@ -113,7 +112,7 @@ class PlayerActivity :
     }
 
     override fun onProgressUpdate(position: Int, duration: Int) {
-//        "position:$position".log()
+//        "position1:$position".log()
         if(!mIsDraggingSeekBar) {
             mViewModel.updatePlayProgress(position / 1000)
             lyricFragment.updateLyricProgress(position.toLong())
@@ -121,7 +120,8 @@ class PlayerActivity :
     }
 
     override fun onDestroy() {
+        "JG onDestroy".log()
         super.onDestroy()
-        PlayerService.getInstance().removeUpdateListener()
+        PlayerService.removeProgressListener(this)
     }
 }

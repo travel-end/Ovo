@@ -3,6 +3,8 @@ package hhh.qaq.ovo.data.db
 import hhh.qaq.ovo.constant.Constant
 import hhh.qaq.ovo.model.Music
 import hhh.qaq.ovo.model.MusicToPlaylist
+import hhh.qaq.ovo.model.Playlist
+import hhh.qaq.ovo.utils.log
 import org.litepal.LitePal
 
 object DaoLitePal {
@@ -22,11 +24,16 @@ object DaoLitePal {
                 val data = LitePal.where("pid = ?", playId).order(order).find(MusicToPlaylist::class.java)
                 for (it in data) {
                     val musicList = LitePal.where("mid = ?", it.mid).find(Music::class.java)
-                    musicList.addAll(musicList)
+//                    "historyMusics:${musicList.size},${musicList[0].title}".log()
+                    musiclist.addAll(musicList)
                 }
             }
         }
         return musiclist
+    }
+
+    fun getPlayList(pid:String):Playlist {
+        return LitePal.where("pid = ?", pid).findFirst(Playlist::class.java)
     }
 
     fun saveOrUpdateMusic(music: Music, isAsync: Boolean = false) {

@@ -57,9 +57,10 @@ class PlayerService : Service() {
     private lateinit var intentFilter: IntentFilter
 
     private lateinit var mMainHandler: Handler
-//    private lateinit var mWorkThread: HandlerThread
+
+    //    private lateinit var mWorkThread: HandlerThread
     private lateinit var mHandler: MusicPlayerHandler
-    private lateinit var mUpdateProgressHandler:UpdateProgressHandler
+    private lateinit var mUpdateProgressHandler: UpdateProgressHandler
 
     private lateinit var powerManager: PowerManager
     lateinit var mWakeLock: PowerManager.WakeLock
@@ -82,12 +83,20 @@ class PlayerService : Service() {
 
     companion object {
         private lateinit var instance: PlayerService
-        private var onPlayProgressUpdateListener:OnPlayProgressListener?=null
+        private var onPlayProgressUpdateListener: OnPlayProgressListener? = null
+        private val progressListenerList = mutableListOf<OnPlayProgressListener>()
+        fun addProgressListener(listener: OnPlayProgressListener?) {
+            if (listener!= null) {
+                progressListenerList.add(listener)
+            }
+        }
+        fun removeProgressListener(listener: OnPlayProgressListener?) {
+            if (listener!= null) {
+                progressListenerList.remove(listener)
+            }
+        }
         fun getInstance(): PlayerService {
             return instance
-        }
-        fun setOnUpdateProgressListener(listener: OnPlayProgressListener?) {
-            onPlayProgressUpdateListener = listener
         }
     }
 
@@ -202,8 +211,16 @@ class PlayerService : Service() {
                 "上一首",
                 retrievePlaybackAction(PlayConstant.ACTION_PREV)
             )
-            .addAction(playButtonResId, title, retrievePlaybackAction(PlayConstant.ACTION_PLAY_PAUSE))
-            .addAction(R.drawable.ic_skip_next, "下一首", retrievePlaybackAction(PlayConstant.ACTION_NEXT))
+            .addAction(
+                playButtonResId,
+                title,
+                retrievePlaybackAction(PlayConstant.ACTION_PLAY_PAUSE)
+            )
+            .addAction(
+                R.drawable.ic_skip_next,
+                "下一首",
+                retrievePlaybackAction(PlayConstant.ACTION_NEXT)
+            )
             .addAction(R.drawable.ic_lyric, "歌词", retrievePlaybackAction(PlayConstant.ACTION_LYRIC))
             .addAction(R.drawable.cha, "关闭", retrievePlaybackAction(PlayConstant.ACTION_CLOSE))
             .setDeleteIntent(
@@ -437,10 +454,10 @@ class PlayerService : Service() {
 
     private fun updateWidget(action: String) {
         val intent = Intent(action)
-        intent.putExtra(PlayConstant.ACTION_IS_WIDGET,true)
-        intent.putExtra(PlayConstant.PLAY_STATUS,isPlaying)
+        intent.putExtra(PlayConstant.ACTION_IS_WIDGET, true)
+        intent.putExtra(PlayConstant.PLAY_STATUS, isPlaying)
         if (action == PlayConstant.META_CHANGED) {
-            intent.putExtra(PlayConstant.SONG,mPlayingMusic)
+            intent.putExtra(PlayConstant.SONG, mPlayingMusic)
         }
         sendBroadcast(intent)
     }
@@ -687,7 +704,7 @@ class PlayerService : Service() {
             PlayConstant.PLAY_QUEUE_CHANGE -> {
                 GlobalEventBus.playListChanged.value = PlaylistEvent(Constant.PLAYLIST_QUEUE_ID)
             }
-            PlayConstant.PLAY_STATE_LOADING_CHANGED->{
+            PlayConstant.PLAY_STATE_LOADING_CHANGED -> {
                 GlobalEventBus.stateChanged.value =
                     StatusChangedEvent(isPrepared, isPlaying, percent * getDuration())
             }
@@ -909,7 +926,6 @@ class PlayerService : Service() {
                 }
             }
         }
-
     }
 
     // 耳机插入广播接收器
@@ -930,12 +946,17 @@ class PlayerService : Service() {
         }
     }
 
-    private class UpdateProgressHandler(content:PlayerService):Handler(Looper.getMainLooper()) {
+    private class UpdateProgressHandler(content: PlayerService) : Handler(Looper.getMainLooper()) {
         private val content: WeakReference<PlayerService> = WeakReference(content)
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            content.get()?.let {s->
-                onPlayProgressUpdateListener?.onProgressUpdate(s.getCurrentPosition(),s.getDuration())
+            content.get()?.let { s ->
+                progressListenerList.forEach {
+                    it.onProgressUpdate(
+                        s.getCurrentPosition(),
+                        s.getDuration()
+                    )
+                }
                 s.updatePlayProgress()
             }
         }
@@ -944,7 +965,7 @@ class PlayerService : Service() {
     fun updatePlayProgress() {
         if (isPlaying) {
             mUpdateProgressHandler.removeMessages(PlayConstant.UPDATE_PROGRESS)
-            mUpdateProgressHandler.sendEmptyMessageDelayed(PlayConstant.UPDATE_PROGRESS,300)
+            mUpdateProgressHandler.sendEmptyMessageDelayed(PlayConstant.UPDATE_PROGRESS, 300)
         }
     }
 
@@ -982,12 +1003,13 @@ class PlayerService : Service() {
         isMusicPlaying = false
         mPlayer.release()
         mHandler.removeCallbacksAndMessages(null)
-        mUpdateProgressHandler.removeMessages(PlayConstant.UPDATE_PROGRESS)
-        mUpdateProgressHandler.removeCallbacksAndMessages(null)
+//        mUpdateProgressHandler.removeMessages(PlayConstant.UPDATE_PROGRESS)
+//        mUpdateProgressHandler.removeCallbacksAndMessages(null)
 //        if (mWorkThread.isAlive) {
 //            mWorkThread.quitSafely()
 //            mWorkThread.interrupt()
 //        }
+        removeUpdateListener()
         audioAndFocusManager.abandonAudioFocus()
         cancelNotification()
         unregisterReceiver(mServiceReceiver)
@@ -998,9 +1020,9 @@ class PlayerService : Service() {
         }
     }
 
-    fun removeUpdateListener() {
+    private fun removeUpdateListener() {
         mUpdateProgressHandler.removeMessages(PlayConstant.UPDATE_PROGRESS)
         mUpdateProgressHandler.removeCallbacksAndMessages(null)
-        onPlayProgressUpdateListener=null
+        onPlayProgressUpdateListener = null
     }
 }

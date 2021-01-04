@@ -45,9 +45,11 @@ class PlayerViewModel(app: Application) : BaseViewModel(app) {
             mMusicName.set(music.title)
             mMusicSinger.set(music.artist)
             mIsLovedMusic.set(music.isLove)
-            setProgressBarMax(music.duration)
             if (!music.isOnline) {
-                mSecondProgress.set(music.duration.toInt())
+                mSecondProgress.set((music.duration/1000).toInt())
+                setProgressBarMax((music.duration/1000))
+            } else {
+                setProgressBarMax(music.duration)
             }
         }
     }

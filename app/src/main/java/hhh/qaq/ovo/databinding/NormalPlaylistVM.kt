@@ -13,17 +13,33 @@ class NormalPlaylistVM(app:Application,private val music: Music?=null):BaseItemV
     var mIsPlaying = ObservableField(false)
     var mMusicSinger= ObservableField("")
     var mMusicAlbumName= ObservableField("")
-    var mRippleViewClickListener = RippleView.OnRippleCompleteListener {
-        "position:$position ,url:${music?.coverUri}".log()
-        music?.let {
-            PlayManager.playOnline(music)
 
-        }
-    }
+    var mRippleViewClickListener : RippleView.OnRippleCompleteListener ?=null
     fun onMoreClick() {
         "moreClick".log()
     }
-    fun bindData() {
 
+
+    fun bindData() {
+        setMusicName()
+        setMusicSinger()
+        showIsPlaying()
+        setMusicAlbumName()
+    }
+    fun setOnRippleViewClickListener(listener:RippleView.OnRippleCompleteListener?) {
+        mRippleViewClickListener = listener
+    }
+
+    fun setMusicName() {
+        mMusicName.set(music?.title)
+    }
+
+    fun setMusicSinger() {
+        mMusicSinger.set(music?.artist)
+    }
+    fun showIsPlaying() {
+    }
+    fun setMusicAlbumName() {
+        mMusicAlbumName.set(music?.album)
     }
 }
