@@ -13,11 +13,11 @@ import hhh.qaq.ovo.widget.lrc.LrcView
 class PlayerLyricFragment:BaseViewModelFragment<PlayerLyricViewModel>(R.layout.fragment_lyric,PlayerLyricViewModel::class.java) {
     private val isPlaying = PlayManager.isPlaying()
     private var mIsInit:Boolean = false
-    private lateinit var mLyricView:LrcView
+    private var mLyricView:LrcView?=null
     override fun initView() {
         super.initView()
-        mLyricView = mRootView.findViewById(R.id.lrc_view)
-        mLyricView.setDraggable(true){ _, time ->
+        mLyricView = mRootView?.findViewById(R.id.lrc_view)
+        mLyricView?.setDraggable(true){ _, time ->
             PlayManager.seekTo(time.toInt())
             if (!isPlaying) {
                 PlayManager.playPause()
@@ -30,7 +30,7 @@ class PlayerLyricFragment:BaseViewModelFragment<PlayerLyricViewModel>(R.layout.f
 
     fun updateLyricProgress(progress:Long) {
         if (mIsInit) {
-            if (mLyricView.hasLrc()) {
+            if (mLyricView?.hasLrc()==true) {
                 mViewModel.updateLyricProgress(progress)
             }
         }

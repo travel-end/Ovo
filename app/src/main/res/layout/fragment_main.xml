@@ -25,7 +25,7 @@
                 android:layout_height="@dimen/dp_32"
                 android:layout_marginStart="@dimen/dp_18"
                 android:layout_weight="1.6"
-                android:onClick="@{()->vm.gotoSearch()}"
+                android:onClick="@{(v)->vm.gotoSearch(v)}"
                 android:background="@drawable/shape_search_bg"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -86,7 +86,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/dp_8"
                         android:layout_weight="1"
-                        android:onClick="@{()->vm.gotoLocalMusics()}"
+                        android:onClick="@{(v)->vm.gotoLocalMusics(v)}"
                         android:background="@drawable/shape_white_bg_large">
 
                         <ImageView
@@ -130,7 +130,7 @@
                         android:layout_height="@dimen/dp_76"
                         android:layout_marginStart="@dimen/dp_8"
                         android:layout_weight="1"
-                        android:onClick="@{()->vm.gotoHistoryMusics()}"
+                        android:onClick="@{(v)->vm.gotoHistoryMusics(v)}"
                         android:background="@drawable/shape_white_bg_large">
 
                         <ImageView

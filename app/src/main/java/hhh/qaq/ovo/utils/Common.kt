@@ -17,8 +17,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import hhh.qaq.ovo.app.OvoApp
 import kotlinx.coroutines.*
 import java.lang.reflect.ParameterizedType
@@ -30,6 +33,17 @@ import java.lang.reflect.ParameterizedType
 @Suppress("UNCHECKED_CAST")
 fun <T> getClass(t: Any): Class<T> =
         (t.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<T>
+
+@Suppress("UNCHECKED_CAST")
+fun <F:Fragment> AppCompatActivity.getFragment(fragmentClass:Class<F>):F? {
+    val host = this.supportFragmentManager.fragments.first() as NavHostFragment
+    host.childFragmentManager.fragments.forEach {
+        if (fragmentClass.isAssignableFrom(it.javaClass)) {
+            return it as F
+        }
+    }
+    return null
+}
 
 val Float.fpx
     get() = TypedValue.applyDimension(

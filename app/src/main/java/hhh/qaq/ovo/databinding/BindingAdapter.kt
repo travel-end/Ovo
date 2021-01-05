@@ -35,7 +35,6 @@ fun loadImgUrl(iv: ImageView, url: String?) {
 
 @BindingAdapter("setTagLayoutAdapter")
 fun setTagLayoutAdapter(tagLayout: TagFlowLayout, tagAdapter: FlowTagAdapter) {
-    Log.e("JG", "tagLayout:$tagLayout,tagAdapter:$tagAdapter")
     if (tagLayout.adapter != tagAdapter) {
         tagLayout.adapter = tagAdapter
     }

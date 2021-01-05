@@ -24,9 +24,9 @@ import hhh.qaq.ovo.widget.PlayPauseView
 class PlayControllerFragment :
     BaseVMRepositoryFragment<PlayControllerViewModel>(R.layout.fragment_playcontroller),
     OnPlayProgressListener {
-    private val TAG = "PlayControlFragment"
-    private lateinit var mControllerRv: RecyclerView
-    private lateinit var mPlayPauseView: PlayPauseView
+    private val TAG = "JG"
+    private var mControllerRv: RecyclerView? = null
+    private var mPlayPauseView: PlayPauseView? = null
     override fun initViewModel(app: Application) = PlayControllerViewModel(app)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,43 +34,47 @@ class PlayControllerFragment :
         PlayerService.addProgressListener(this)
         PlayerService.getInstance().updatePlayProgress()
     }
+
     override fun initView() {
         super.initView()
-        mControllerRv = mRootView.findViewById(R.id.view_rv)
-        mPlayPauseView = mRootView.findViewById(R.id.play_controller_view)
-        mControllerRv.onFlingListener = null
+        mControllerRv = mRootView?.findViewById(R.id.view_rv)
+        mPlayPauseView = mRootView?.findViewById(R.id.play_controller_view)
+        mControllerRv?.onFlingListener = null
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(mControllerRv)
-        mControllerRv.scrollToPosition(PlayManager.position())
+        mControllerRv?.scrollToPosition(PlayManager.position())
     }
 
     override fun onAction() {
         super.onAction()
+        // 歌单改变
         GlobalEventBus.playListChanged.observeInFragment(this, Observer {
 //            "---PlayControlFragment---PlaylistEvent---${it?.type}".log(TAG)
             it?.let { event ->
                 if (event.type == Constant.PLAYLIST_QUEUE_ID) {
                     mViewModel.setMusicList()
-                    mControllerRv.scrollToPosition(PlayManager.position())
+                    mControllerRv?.scrollToPosition(PlayManager.position())
                 }
             }
         })
+        // 歌曲状态改变
         GlobalEventBus.stateChanged.observeInFragment(this, Observer {
 //            "---PlayControlFragment---stateChanged---${it?.isPrepared}".log(TAG)
             it?.let {
-                mPlayPauseView.setLoading(!it.isPrepared)
+                mPlayPauseView?.setLoading(!it.isPrepared)
                 mViewModel.mIsPlaying.set(it.isPlaying)
                 PlayerService.getInstance().updatePlayProgress()
             }
         })
+        // 换歌
         GlobalEventBus.metaChanged.observeInFragment(this, Observer {
-//            "---PlayControlFragment---metaChanged---${it?.music}".log(TAG)
+//            "---PlayControlFragment---metaChanged---".log(TAG)
             it?.let {
                 mViewModel.mIsShowController.set(it.music != null)
-                mControllerRv.scrollToPosition(PlayManager.position())
+                mControllerRv?.scrollToPosition(PlayManager.position())
             }
         })
-        mControllerRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        mControllerRv?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -78,8 +82,7 @@ class PlayControllerFragment :
                     val first = lm.findFirstVisibleItemPosition()
                     val last = lm.findLastVisibleItemPosition()
                     if (first == last && first != PlayManager.position()) {
-                        // TODO: 2020/12/30
-//                    PlayManager.play(first)
+                        PlayManager.play(first)
                     }
                 }
             }
@@ -92,7 +95,7 @@ class PlayControllerFragment :
     }
 
     override fun onProgressUpdate(position: Int, duration: Int) {
-        mPlayPauseView.setProgress(1.0f * position / duration)
+        mPlayPauseView?.setProgress(1.0f * position / duration)
     }
 
 }

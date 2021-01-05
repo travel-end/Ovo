@@ -12,4 +12,7 @@ import hhh.qaq.ovo.viewmodel.MainFrgViewModel
  */
 class MainFragment:BaseVMRepositoryFragment<MainFrgViewModel>(R.layout.fragment_main) {
     override fun initViewModel(app:Application)=MainFrgViewModel(app)
+    override fun initView() {
+        super.initView()
+    }
 }

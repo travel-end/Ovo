@@ -28,7 +28,7 @@ class PlayerCoverFragment:BaseViewModelFragment<PlayerCoverViewModel>(R.layout.f
     override fun initView() {
         super.initView()
         if (mCover==null) {
-            mCover = mRootView.findViewById(R.id.cover2View)
+            mCover = mRootView?.findViewById(R.id.cover2View)
         }
         initAnimator()
         if (isMusicPlaying) {

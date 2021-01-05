@@ -40,9 +40,7 @@ import kotlin.system.exitProcess
  */
 class PlayerService : Service() {
     private val mBindStub = IMusicServiceStub(this)
-
     private lateinit var mPlayer: MusicPlayerEngine
-
     private var mPlayingMusic: Music? = null
     private var mPlayQueue = mutableListOf<Music>()
     private val mHistoryPos = mutableListOf<Int>()
@@ -50,51 +48,45 @@ class PlayerService : Service() {
     private var mPlaylistId: String = Constant.PLAYLIST_QUEUE_ID
     private var playErrorTimes: Int = 0 // 错误次数 超过最大错误次数，自动停止播放
     private var percent: Int = 0// 播放缓存进度
-
     private lateinit var mServiceReceiver: ServiceReceiver
     private lateinit var mHeadsetReceiver: HeadsetReceiver
     private lateinit var mHeadsetPlugInReceiver: HeadsetPlugInReceiver
     private lateinit var intentFilter: IntentFilter
-
     private lateinit var mMainHandler: Handler
 
     //    private lateinit var mWorkThread: HandlerThread
     private lateinit var mHandler: MusicPlayerHandler
     private lateinit var mUpdateProgressHandler: UpdateProgressHandler
-
     private lateinit var powerManager: PowerManager
     lateinit var mWakeLock: PowerManager.WakeLock
-
     private lateinit var mediaSessionManager: MediaSessionManager
     private lateinit var audioAndFocusManager: AudioAndFocusManager
-
     private lateinit var mNotificationManager: NotificationManager
     private lateinit var mNotificationBuilder: NotificationCompat.Builder
     private lateinit var mNotification: Notification
-
     private var isMusicPlaying: Boolean = false
     private var isRunningForeground: Boolean = false
     private var mServiceInUse: Boolean = false
     private var mPauseByTransientLossOfFocus: Boolean = false// 暂时失去焦点，会再次回去音频焦点
-
     private var mNotificationPostTime: Long = 0L
     private var mServiceStartId: Int = -1
-
 
     companion object {
         private lateinit var instance: PlayerService
         private var onPlayProgressUpdateListener: OnPlayProgressListener? = null
         private val progressListenerList = mutableListOf<OnPlayProgressListener>()
         fun addProgressListener(listener: OnPlayProgressListener?) {
-            if (listener!= null) {
+            if (listener != null) {
                 progressListenerList.add(listener)
             }
         }
+
         fun removeProgressListener(listener: OnPlayProgressListener?) {
-            if (listener!= null) {
+            if (listener != null) {
                 progressListenerList.remove(listener)
             }
         }
+
         fun getInstance(): PlayerService {
             return instance
         }
@@ -229,9 +221,7 @@ class PlayerService : Service() {
                     PlaybackStateCompat.ACTION_STOP
                 )
             )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mNotificationBuilder.setShowWhen(false)
-        }
+        mNotificationBuilder.setShowWhen(false)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // 线控
@@ -267,7 +257,6 @@ class PlayerService : Service() {
             savePlayQueue(false)
             stopSelf(mServiceStartId)
         }
-
     }
 
     // 初始化音乐播放服务
@@ -295,6 +284,7 @@ class PlayerService : Service() {
             mHandler.sendEmptyMessage(PlayConstant.VOLUME_FADE_DOWN)
             if (isPlaying) {
                 isMusicPlaying = false
+                mPlayingMusic?.currentPosition = getCurrentPosition()//保存當前播放歌曲的進度
                 notifyChange(PlayConstant.PLAY_STATE_CHANGED)
                 updateNotification(false)
                 val task = object : TimerTask() {
@@ -307,7 +297,7 @@ class PlayerService : Service() {
                     }
                 }
                 val timer = Timer()
-                timer.schedule(task, 200)
+                timer.schedule(task, 250)
             }
         }
     }
@@ -338,11 +328,18 @@ class PlayerService : Service() {
         }
     }
 
+    /**
+     * 切换歌单播放
+     * 1、歌单不一样才切换
+     * 2、相同歌单只切换歌曲
+     * 3、相同歌曲不重复播放
+     */
     fun play(musicList: List<Music>?, id: Int, pid: String?) {
         if (isNotNullOrEmpty(musicList)) {
             if (musicList!!.size <= id) return
             if (mPlaylistId == pid && id == mPlayingPos) return
             if (mPlaylistId != pid || mPlayQueue.size == 0 || mPlayQueue.size != musicList.size) {
+                "更新播放歌单：歌单id:$pid, 当前位置：$id".log("JG")
                 setPlayQueue(musicList)
                 mPlaylistId = pid ?: Constant.PLAYLIST_QUEUE_ID
             }
@@ -354,17 +351,16 @@ class PlayerService : Service() {
     // 播放在线音乐【搜索的音乐】  加入播放队列 并播放音乐
     fun play(music: Music?) {
         if (music == null) return
-        if (mPlayingPos == -1 || mPlayQueue.size == 0) {
+        if (mPlayingPos == -1 || mPlayQueue.size == 0) {// 当前没有正在播放的音乐
             mPlayQueue.add(music)
             mPlayingPos = 0
-        } else if (mPlayingPos < mPlayQueue.size) {
+        } else if (mPlayingPos < mPlayQueue.size) {// 当前有播放的歌曲并且不是最后一首
             mPlayQueue.add(mPlayingPos, music)
         } else {
             mPlayQueue.add(mPlayQueue.size, music)
         }
         // 播放列表改变
         notifyChange(PlayConstant.PLAY_QUEUE_CHANGE)
-//        "当前播放的音乐：${music.toString()}".log()
         mPlayingMusic = music
         playCurrentAndNext()
     }
@@ -407,13 +403,10 @@ class PlayerService : Service() {
     }
 
     fun getPlayQueue(): List<Music> {
-        if (mPlayQueue.size > 0) {
-            return mPlayQueue
-        }
+        "获取当前播放队列 --> 歌曲数目: ${mPlayQueue.size}".log("JG")
         return mPlayQueue
     }
 
-    // 获取正在播放的歌曲
     fun removeFromQueue(position: Int) {
         try {
             if (position == mPlayingPos) {
@@ -476,7 +469,6 @@ class PlayerService : Service() {
             isMusicPlaying = false
             notifyChange(PlayConstant.PLAY_STATE_CHANGED)
             updateNotification(false)
-            "当前播放歌曲：${mPlayingMusic.toString()}".log()
             mPlayingMusic?.let { music ->
                 if (music.uri.isNullOrEmpty() ||
                     music.type != Constant.LOCAL ||
@@ -486,8 +478,9 @@ class PlayerService : Service() {
                         "${R.string.net_error}".toast()
                     } else {
                         mPlayingMusic = MusicApi.getMusicPlayUrl(mPlayingMusic)
+                        "当前播放歌曲（网络歌曲）：${mPlayingMusic.toString()}".log("JG")
                         val playUri = mPlayingMusic?.uri
-                        "获取播放地址：uri:$playUri".log()
+//                        "获取播放地址：uri:$playUri".log("JG")
                         if (playUri.isNullOrEmpty()) {
                             checkPlayErrorTimes()
                         } else {
@@ -499,14 +492,14 @@ class PlayerService : Service() {
                 }
                 saveHistory()
                 mHistoryPos.add(mPlayingPos)
-                if (mPlayingMusic?.uri != null) {
-                    val uri = mPlayingMusic?.uri
-                    if (!uri.isNullOrEmpty()) {
-                        if (!uri.startsWith(Constant.IS_URL_HEADER) && !FileUtils.exists(uri)) {
+                // 本地歌曲
+                if (music.uri != null) {
+                    if (!music.uri.isNullOrEmpty()) {
+                        if (!music.uri!!.startsWith(Constant.IS_URL_HEADER) && !FileUtils.exists(music.uri)) {
                             checkPlayErrorTimes()
                         } else {
                             playErrorTimes = 0
-                            mPlayer.setDataSource(uri)
+                            mPlayer.setDataSource(music.uri)
                         }
                     }
                 }
@@ -574,18 +567,18 @@ class PlayerService : Service() {
     }
 
     // 重新加载当前进度
-    fun reloadPlayQueue() {
+    private fun reloadPlayQueue() {
         mPlayQueue.clear()
         mHistoryPos.clear()
         mPlayQueue = SongOperator.getPlayQueue().toMutableList()
-        mPlayingPos = SpUtil.getInt(Constant.KEY_PLAY_POSITION)
+        mPlayingPos = SpUtil.getInt(Constant.KEY_PLAY_POSITION,-1)
         if (mPlayingPos >= 0 && mPlayingPos < mPlayQueue.size) {
             mPlayingMusic = mPlayQueue[mPlayingPos]
             updateNotification(true)
             seekTo(SpUtil.getInt(Constant.KEY_POSITION), true)
             notifyChange(PlayConstant.META_CHANGED)
         }
-        notifyChange(PlayConstant.META_CHANGED)
+        notifyChange(PlayConstant.PLAY_QUEUE_CHANGE)
     }
 
     private fun saveHistory() {
@@ -607,7 +600,7 @@ class PlayerService : Service() {
         SpUtil.saveValue(Constant.KEY_POSITION, getCurrentPosition())
     }
 
-    fun setPlayQueue(playQueue: List<Music>) {
+    private fun setPlayQueue(playQueue: List<Music>) {
         mPlayQueue.clear()
         mHistoryPos.clear()
         mPlayQueue.addAll(playQueue)
@@ -655,31 +648,6 @@ class PlayerService : Service() {
         return mPlayingPos
     }
 
-    private fun getPreviousPosition(): Int {
-        val playModeId = PlayQueueManager.getPlayModeId()
-        if (mPlayQueue.isEmpty()) {
-            return -1
-        }
-        if (mPlayQueue.size == 1) {
-            return 0
-        }
-        if (playModeId == PlayQueueManager.PLAY_MODE_REPEAT) {
-            if (mPlayingPos < 0) {
-                return 0
-            }
-        } else if (playModeId == PlayQueueManager.PLAY_MODE_RANDOM) {
-            mPlayingPos = Random.nextInt(mPlayQueue.size)
-            return Random.nextInt(mPlayQueue.size)
-        } else {
-            if (mPlayingPos == 0) {
-                return mPlayQueue.size - 1
-            } else if (mPlayingPos > 0) {
-                return mPlayingPos - 1
-            }
-        }
-        return mPlayingPos
-    }
-
     // 根据位置播放
     fun playMusic(position: Int) {
         mPlayingPos = if (position >= mPlayQueue.size || position == -1) {
@@ -695,13 +663,15 @@ class PlayerService : Service() {
         when (what) {
             PlayConstant.META_CHANGED -> {
                 GlobalEventBus.metaChanged.value = MetaChangedEvent(mPlayingMusic)
+                updateWidget(PlayConstant.META_CHANGED)
             }
             PlayConstant.PLAY_STATE_CHANGED -> {
+                updateWidget(PlayConstant.ACTION_PLAY_PAUSE)
                 mediaSessionManager.updatePlaybackState()
                 GlobalEventBus.stateChanged.value =
                     StatusChangedEvent(isPrepared, isPlaying, percent * getDuration())
             }
-            PlayConstant.PLAY_QUEUE_CHANGE -> {
+            PlayConstant.PLAY_QUEUE_CLEAR,PlayConstant.PLAY_QUEUE_CHANGE -> {
                 GlobalEventBus.playListChanged.value = PlaylistEvent(Constant.PLAYLIST_QUEUE_ID)
             }
             PlayConstant.PLAY_STATE_LOADING_CHANGED -> {
@@ -712,11 +682,11 @@ class PlayerService : Service() {
     }
 
     fun seekTo(pos: Int, isInit: Boolean) {
-        "pos:$pos".log()
+        "seekTo:$pos".log("JG")
         if (mPlayer.isInitialized && mPlayingMusic != null) {
             mPlayer.seek(pos)
         } else if (isInit) {
-            // TODO: 2020/12/5
+            "seekTo failed:$pos".log("JG")
         }
     }
 
@@ -750,7 +720,7 @@ class PlayerService : Service() {
                         play()
                     }
                 } else if (PlayConstant.UNLOCK_DESKTOP_LYRIC == command) {
-
+                    "UNLOCK_DESKTOP_LYRIC".log("JG")
                 } else if (PlayConstant.CMD_PAUSE == command) {
                     pause()
                     mPauseByTransientLossOfFocus = false
@@ -762,7 +732,7 @@ class PlayerService : Service() {
                     seekTo(0, false)
                     releaseServiceUiAndStop()
                 } else if (PlayConstant.ACTION_LYRIC == action) {
-
+                    "ACTION_LYRIC".log("JG")
                 } else if (PlayConstant.ACTION_CLOSE == action) {
                     stop(true)
                     stopSelf()
@@ -826,9 +796,7 @@ class PlayerService : Service() {
                             }
                         }
                         // 释放电源锁
-                        PlayConstant.RELEASE_WAKELOCK -> {
-                            s.mWakeLock.release()
-                        }
+                        PlayConstant.RELEASE_WAKELOCK -> s.mWakeLock.release()
                         PlayConstant.PREPARE_ASYNC_UPDATE -> {
                             s.percent = msg.obj as Int
                             s.notifyChange(PlayConstant.PLAY_STATE_LOADING_CHANGED)
@@ -907,7 +875,7 @@ class PlayerService : Service() {
                 if (isRunningForeground) {
                     when (intent.action) {
                         BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED -> {
-                            "蓝牙耳机拔出状态改变".log()
+                            "蓝牙耳机拔出状态改变".log("JG")
                             if (BluetoothProfile.STATE_DISCONNECTED == bluetoothAdapter.getProfileConnectionState(
                                     BluetoothProfile.HEADSET
                                 ) && isPlaying
@@ -917,7 +885,7 @@ class PlayerService : Service() {
                             }
                         }
                         AudioManager.ACTION_AUDIO_BECOMING_NOISY -> {
-                            "有线耳机拔出状态改变".log()
+                            "有线耳机拔出状态改变".log("JG")
                             if (isPlaying) {
                                 pause()
                             }
@@ -941,7 +909,7 @@ class PlayerService : Service() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null && intent.hasExtra("state")) {
                 val isPlugIn = intent.extras?.getInt("state") == 1
-                "耳机插入状态：$isPlugIn".log()
+                "耳机插入状态：$isPlugIn".log("JG")
             }
         }
     }

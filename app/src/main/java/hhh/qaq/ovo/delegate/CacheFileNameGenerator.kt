@@ -1,4 +1,4 @@
-package hhh.qaq.ovo.cache
+package hhh.qaq.ovo.delegate
 
 import com.danikula.videocache.file.Md5FileNameGenerator
 

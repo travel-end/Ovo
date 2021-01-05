@@ -4,9 +4,12 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import hhh.qaq.ovo.BR
 import hhh.qaq.ovo.listener.VariableId
@@ -22,8 +25,9 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
 
     val hasNav: MutableLiveData<Boolean> = MutableLiveData()
 
-    private var mFragment: BaseFragment? = null
-    var mBundle: Bundle?=null
+    //    private var mFragment: BaseFragment? = null
+    var mBundle: Bundle? = null
+    private var mNavController: NavController? = null
 
     override fun id() = BR.vm
 
@@ -31,39 +35,48 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
 
     }
 
-    fun setFragment(fragment: BaseFragment?) {
-        mFragment = fragment
-    }
+//    fun setFragment(fragment: BaseFragment?) {
+//        mFragment = fragment
+//    }
 
-    fun setBundle(bundle: Bundle){
-        mBundle= bundle
+    fun setBundle(bundle: Bundle) {
+        mBundle = bundle
     }
 
     protected fun request(block: suspend () -> Unit) {
         viewModelScope.launch {
             try {
                 block.invoke()
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 "request exception:${e.message}".log()
             }
         }
     }
 
-    fun nav(actionId: Int, bundle: Bundle? = null) {
-        mFragment?.let {
-            val nav = NavHostFragment.findNavController(it)
+    fun nav(v: View?, actionId: Int, bundle: Bundle? = null) {
+        v?.let {
+            mNavController = Navigation.findNavController(it)
             if (bundle != null) {
-                nav.navigate(actionId, bundle)
+                mNavController?.navigate(actionId, bundle)
             } else {
-                nav.navigate(actionId)
+                mNavController?.navigate(actionId)
+            }
+        }
+    }
+    fun nav(f: BaseFragment?, actionId: Int, bundle: Bundle? = null) {
+        f?.let {
+            mNavController = NavHostFragment.findNavController(it)
+            if (bundle != null) {
+                mNavController?.navigate(actionId, bundle)
+            } else {
+                mNavController?.navigate(actionId)
             }
         }
     }
 
+
     fun navigationUp() {
-        mFragment?.let {
-            NavHostFragment.findNavController(it).navigateUp()
-        }
+        mNavController?.navigateUp()
     }
 
     fun popBackup() {

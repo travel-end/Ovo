@@ -2,6 +2,7 @@ package hhh.qaq.ovo.viewmodel
 
 import android.app.Application
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.ObservableField
 import hhh.qaq.ovo.R
 import hhh.qaq.ovo.base.BaseResViewModel
@@ -19,16 +20,16 @@ class MainFrgViewModel(app:Application):BaseResViewModel<MainFrgRepository>(app,
     var mHistoryMusicNum = ObservableField(R.string.song_num.getResString(0))
     var mCollectedMusicNum = ObservableField(R.string.song_num.getResString(0))
     var mDownloadedMusicNum = ObservableField(R.string.song_num.getResString(0))
-    fun gotoSearch() {
-        nav(R.id.act_main_to_search_main)
+    fun gotoSearch(v:View) {
+        nav(v,R.id.act_main_to_search_main)
     }
 
-    fun gotoLocalMusics() {
-        nav(R.id.act_main_to_normal_music_fragment, Bundle().apply { putString(Constant.KEY_MUSIC_TYPE,Constant.PLAYLIST_LOCAL_ID) })
+    fun gotoLocalMusics(v:View) {
+        nav(v,R.id.act_main_to_normal_music_fragment, Bundle().apply { putString(Constant.KEY_MUSIC_TYPE,Constant.PLAYLIST_LOCAL_ID) })
     }
 
-    fun gotoHistoryMusics() {
-        nav(R.id.act_main_to_normal_music_fragment, Bundle().apply { putString(Constant.KEY_MUSIC_TYPE,Constant.PLAYLIST_HISTORY_ID) })
+    fun gotoHistoryMusics(v:View) {
+        nav(v,R.id.act_main_to_normal_music_fragment, Bundle().apply { putString(Constant.KEY_MUSIC_TYPE,Constant.PLAYLIST_HISTORY_ID) })
     }
 
     override fun onBindViewModel() {

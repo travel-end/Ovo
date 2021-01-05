@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <!--
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        -->
         <variable
             name="vm"
             type="hhh.qaq.ovo.viewmodel.MainActViewModel" />
@@ -42,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            app:headerLayout="@layout/view_nav_header"
             app:menu="@menu/menu_main" />
 
     </androidx.drawerlayout.widget.DrawerLayout>

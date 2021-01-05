@@ -15,6 +15,7 @@ class SearchHotFragment:BaseVMRepositoryFragment<SearchHotViewModel>(R.layout.fr
     override fun initViewModel(app: Application)=SearchHotViewModel(app)
     override fun onAction() {
         super.onAction()
+        mViewModel.setHotFragment(this)
         GlobalEventBus.searchEvent.observeInFragment(this,Observer{
             mViewModel.navigation(it)
         })

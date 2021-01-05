@@ -15,13 +15,13 @@ import hhh.qaq.ovo.R
 open class BaseVpFragment<VM:BaseResViewModel<*>>(@LayoutRes layoutResId:Int,clazz: Class<VM>):BaseViewModelFragment<VM>(layoutResId,clazz) {
     private var vpTitles: Array<String>? = null
     private var vpFragments: Array<Fragment>? = null
-    private lateinit var mediator: TabLayoutMediator
-    protected lateinit var viewPager2:ViewPager2
-    protected lateinit var tabLayout:TabLayout
+    private var mediator: TabLayoutMediator? = null
+    protected var viewPager2:ViewPager2?=null
+    protected var tabLayout:TabLayout? = null
     override fun initView() {
         super.initView()
-        viewPager2 = mRootView.findViewById(R.id.viewPager2)
-        tabLayout = mRootView.findViewById(R.id.tabLayout)
+        viewPager2 = mRootView?.findViewById(R.id.viewPager2)
+        tabLayout = mRootView?.findViewById(R.id.tabLayout)
 
     }
     open fun initVpTitle(title: Array<String>?) {
@@ -34,14 +34,16 @@ open class BaseVpFragment<VM:BaseResViewModel<*>>(@LayoutRes layoutResId:Int,cla
 
     override fun initData() {
         super.initData()
-        viewPager2.adapter = VpAdapter()
-        mediator = TabLayoutMediator(tabLayout,viewPager2,
-            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                if (!vpTitles.isNullOrEmpty()) {
-                    tab.text = vpTitles!![position]
-                }
-            })
-        mediator.attach()
+        viewPager2?.adapter = VpAdapter()
+        if (tabLayout != null && viewPager2!=null) {
+            mediator = TabLayoutMediator(tabLayout!!,viewPager2!!,
+                TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                    if (!vpTitles.isNullOrEmpty()) {
+                        tab.text = vpTitles!![position]
+                    }
+                })
+            mediator?.attach()
+        }
     }
 
     inner class VpAdapter : FragmentStateAdapter(this) {
@@ -50,6 +52,6 @@ open class BaseVpFragment<VM:BaseResViewModel<*>>(@LayoutRes layoutResId:Int,cla
     }
     override fun onDestroy() {
         super.onDestroy()
-        mediator.detach()
+        mediator?.detach()
     }
 }

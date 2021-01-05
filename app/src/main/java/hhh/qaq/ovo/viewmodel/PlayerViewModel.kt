@@ -46,15 +46,18 @@ class PlayerViewModel(app: Application) : BaseViewModel(app) {
             mMusicSinger.set(music.artist)
             mIsLovedMusic.set(music.isLove)
             if (!music.isOnline) {
-                mSecondProgress.set((music.duration/1000).toInt())
-                setProgressBarMax((music.duration/1000))
+                mSecondProgress.set((music.duration / 1000).toInt())
+                setProgressBarMax((music.duration / 1000))
             } else {
                 setProgressBarMax(music.duration)
+            }
+            if (!isPlaying) {// 如果是暂停状态
+                updatePlayProgress(music.currentPosition / 1000)
             }
         }
     }
 
-    fun setPlayBtnStatus(isPlaying:Boolean) {
+    fun setPlayBtnStatus(isPlaying: Boolean) {
         mIsMusicPlaying.set(isPlaying)
     }
 

@@ -10,7 +10,7 @@ import hhh.qaq.ovo.constant.Constant
 import hhh.qaq.ovo.model.HotItem
 import hhh.qaq.ovo.repository.SearchHotRepository
 import hhh.qaq.ovo.ui.adapter.FlowTagAdapter
-import hhh.qaq.ovo.utils.log
+import hhh.qaq.ovo.ui.search.SearchHotFragment
 import hhh.qaq.ovo.widget.flowlayout.TagFlowLayout
 
 /**
@@ -20,26 +20,24 @@ import hhh.qaq.ovo.widget.flowlayout.TagFlowLayout
 class SearchHotViewModel(app:Application):BaseResViewModel<SearchHotRepository>(app,SearchHotRepository()) {
     private val tagList = arrayListOf<HotItem>()
     private val mTagAdapter = FlowTagAdapter(tagList)
+    private var mFragment:SearchHotFragment?=null
     var mHotTagAdapter = ObservableField<FlowTagAdapter>(mTagAdapter)
     var mShowTagLayout= ObservableField<Boolean>(false)
     var mTagClickListener =
-        TagFlowLayout.OnTagClickListener { _, position, _ ->
+        TagFlowLayout.OnTagClickListener { v, position, _ ->
             val item = tagList[position]
-//            "tag:${item.first}".log()
-            nav(R.id.hot_to_search_result_fragment, Bundle().apply { putString(Constant.KEY_SEARCH_CONTENT,item.first) })
+            nav(v,R.id.hot_to_search_result_fragment, Bundle().apply { putString(Constant.KEY_SEARCH_CONTENT,item.first) })
             false
         }
 
     var mDeleteSearchHistoryListener = View.OnClickListener {
-//        "delete".log()
+    }
+    fun setHotFragment(f:SearchHotFragment?) {
+        mFragment = f
     }
 
-    fun navigation(text:String?) {
-        if (text.isNullOrBlank()) {
-            navigationUp()
-        } else {
-            nav(R.id.hot_to_search_result_fragment, Bundle().apply { putString(Constant.KEY_SEARCH_CONTENT,text) })
-        }
+    fun navigation(event:String?) {
+        nav(mFragment,R.id.hot_to_search_result_fragment, Bundle().apply { putString(Constant.KEY_SEARCH_CONTENT,event) })
     }
 
     override fun onBindViewModel() {

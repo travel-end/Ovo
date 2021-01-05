@@ -62,6 +62,8 @@ class Music() : LitePalSupport(), Parcelable {
     var high: Boolean = false //999
     //是否有mv 0代表无，1代表有
     var hasMv: Int = 0
+    // 记录当前播放的位置
+    var currentPosition:Int=0
 
     constructor(parcel: Parcel) : this() {
         type = parcel.readString()

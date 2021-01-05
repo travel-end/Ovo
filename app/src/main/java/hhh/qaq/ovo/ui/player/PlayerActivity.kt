@@ -30,9 +30,9 @@ class PlayerActivity :
     private lateinit var mBottomOpView: LinearLayout
     private lateinit var mDetailView: LinearLayout
     private lateinit var mViewPager2: ViewPager2
-    private lateinit var mSeekBar:SeekBar
+    private lateinit var mSeekBar: SeekBar
     private val mPlayingMusic = PlayManager.getPlayingMusic()
-    var mIsDraggingSeekBar=false
+    var mIsDraggingSeekBar = false
     override fun initView() {
         super.initView()
         PlayerService.addProgressListener(this)
@@ -45,6 +45,7 @@ class PlayerActivity :
         initViewPager2()
         mViewModel.setPlayingMusicInfo(mPlayingMusic)
     }
+
     private fun initCover() {
         loadBigImageView(this, mPlayingMusic) {
             coverFragment.setCoverBitmap(it)
@@ -65,20 +66,20 @@ class PlayerActivity :
                 }
             }
         })
-        mSeekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
+        mSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                mIsDraggingSeekBar=true
+                mIsDraggingSeekBar = true
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                seekBar?.let {sb->
+                seekBar?.let { sb ->
                     val progress = sb.progress
-                    lyricFragment.updateLyricProgress(progress.toLong()*1000)
-                    PlayManager.seekTo(progress*1000)
-                    mIsDraggingSeekBar=false
+                    lyricFragment.updateLyricProgress(progress.toLong() * 1000)
+                    PlayManager.seekTo(progress * 1000)
+                    mIsDraggingSeekBar = false
                 }
             }
 
@@ -113,7 +114,7 @@ class PlayerActivity :
 
     override fun onProgressUpdate(position: Int, duration: Int) {
 //        "position1:$position".log()
-        if(!mIsDraggingSeekBar) {
+        if (!mIsDraggingSeekBar) {
             mViewModel.updatePlayProgress(position / 1000)
             lyricFragment.updateLyricProgress(position.toLong())
         }

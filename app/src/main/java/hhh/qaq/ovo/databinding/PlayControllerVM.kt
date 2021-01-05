@@ -25,11 +25,10 @@ class PlayControllerVM(app: Application, private val music: Music?=null):BaseIte
 
     override fun onItemClick() {
         super.onItemClick()
-        "${music?.title}".log()
         startAct(PlayerActivity::class.java)
     }
 
-    fun setMusicCover() {
+    private fun setMusicCover() {
         music?.let {
             if (it.coverUri.isNotNullOrEmpty()) {
                 mCoverUrl.set(it.coverUri)
@@ -37,6 +36,7 @@ class PlayControllerVM(app: Application, private val music: Music?=null):BaseIte
         }
     }
     fun setMusicName() {
+        "当前列表歌曲：${music?.title}".log("JG")
         mMusicName.set(music?.title)
     }
 

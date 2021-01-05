@@ -23,12 +23,22 @@
 <!--            android:layout_weight="1"-->
 <!--            android:orientation="horizontal"-->
 <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
-        <include
-            layout="@layout/view_controller_rv"
+<!--        <include-->
+<!--            layout="@layout/view_controller_rv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            app:rv="@{vm.MPlayControllerRv}" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/view_rv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:rv="@{vm.MPlayControllerRv}" />
+            android:overScrollMode="never"
+            android:clipToPadding="false"
+            app:setAdapter="@{vm.MAdapterObservable}"
+            app:setLayoutManager="@{vm.MLayoutManager}" />
 
 
         <hhh.qaq.ovo.widget.PlayPauseView
@@ -39,6 +49,7 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_gravity="center"
             isMusicPlaying="@{vm.MIsPlaying}"
+            android:onClick="@{()->vm.playPause()}"
             app:anim_duration="200"
             app:bg_color="@color/translate"
             app:border_width="2dp"

@@ -15,18 +15,4 @@ open class BaseFragment:Fragment() {
         super.onAttach(context)
         mActivity = context as BaseActivity
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initBundle()
-    }
-
-    private fun initBundle() {
-        arguments?.let {
-            getBundle(it)
-        }
-    }
-    open fun getBundle(bundle: Bundle) {
-
-    }
 }

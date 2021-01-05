@@ -2,7 +2,7 @@ package hhh.qaq.ovo.app
 
 import androidx.multidex.MultiDexApplication
 import com.danikula.videocache.HttpProxyCacheServer
-import hhh.qaq.ovo.cache.CacheFileNameGenerator
+import hhh.qaq.ovo.delegate.CacheFileNameGenerator
 import hhh.qaq.ovo.utils.FileUtils
 import org.litepal.LitePal
 import java.io.File
