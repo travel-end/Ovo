@@ -73,6 +73,7 @@ object BitmapUtil {
         return layerDrawable
     }
 
+    // 脱离边框 只有一个固定位置的Drawable
     fun getCoverDrawable2(bitmap: Bitmap?): Drawable? {
         val mScreenWidth = screenWidth
         if (bitmap == null) return null

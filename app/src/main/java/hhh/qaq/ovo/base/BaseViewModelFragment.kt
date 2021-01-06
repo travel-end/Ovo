@@ -17,6 +17,7 @@ import hhh.qaq.ovo.utils.log
 open class BaseViewModelFragment<VM:BaseViewModel>(@LayoutRes private val layoutResId:Int,private val clazz:Class<VM>):BaseFragment() {
     protected lateinit var mViewModel:VM
     protected var mRootView:View?=null
+    protected lateinit var mBinding: ViewDataBinding
     private var isNavigationViewInit:Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,11 +26,11 @@ open class BaseViewModelFragment<VM:BaseViewModel>(@LayoutRes private val layout
     ): View? {
         if (mRootView==null) {
             mViewModel = ViewModelProvider(this)[clazz]
-            val binding :ViewDataBinding= DataBindingUtil.inflate(inflater,layoutResId,container,false)
-            binding.lifecycleOwner = this
-            binding.setVariable(mViewModel.id(),mViewModel)
-            binding.executePendingBindings()
-            mRootView = binding.root
+            mBinding= DataBindingUtil.inflate(inflater,layoutResId,container,false)
+            mBinding.lifecycleOwner = this
+            mBinding.setVariable(mViewModel.id(),mViewModel)
+            mBinding.executePendingBindings()
+            mRootView = mBinding.root
         }
         return mRootView
     }

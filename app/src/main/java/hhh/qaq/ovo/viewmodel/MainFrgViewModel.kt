@@ -7,6 +7,8 @@ import androidx.databinding.ObservableField
 import hhh.qaq.ovo.R
 import hhh.qaq.ovo.base.BaseResViewModel
 import hhh.qaq.ovo.constant.Constant
+import hhh.qaq.ovo.constant.PlayConstant
+import hhh.qaq.ovo.model.Playlist
 import hhh.qaq.ovo.repository.MainFrgRepository
 import hhh.qaq.ovo.utils.getResString
 import hhh.qaq.ovo.utils.log
@@ -30,6 +32,15 @@ class MainFrgViewModel(app:Application):BaseResViewModel<MainFrgRepository>(app,
 
     fun gotoHistoryMusics(v:View) {
         nav(v,R.id.act_main_to_normal_music_fragment, Bundle().apply { putString(Constant.KEY_MUSIC_TYPE,Constant.PLAYLIST_HISTORY_ID) })
+    }
+
+    fun gotoRecommendMusics(v:View) {
+        val playList = Playlist().apply {
+            pid = Constant.PLAYLIST_WY_RECOMMEND_ID
+            type = Constant.PLAYLIST_WY_RECOMMEND_ID
+            name = R.string.listener_fly.getResString()
+        }
+        nav(v,R.id.act_main_to_mdstyle_music_fragment,Bundle().apply { putParcelable(PlayConstant.PLAYLIST,playList) })
     }
 
     override fun onBindViewModel() {

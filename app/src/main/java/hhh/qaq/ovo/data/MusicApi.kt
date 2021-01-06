@@ -42,7 +42,7 @@ object MusicApi {
                 "${Constant.SONG_URL_DATA_LEFT}${music.mid}${Constant.SONG_URL_DATA_RIGHT}"
             execute {
                 val result =
-                    RetrofitClient.instance.songUrlApiService.getSongUrl(songUrl)
+                    QQRetrofitClient.getInstance().songUrlApiService.getSongUrl(songUrl)
                 if (result.code == 0) {
                     val sipList = result.req_0?.data?.sip
                     var sip = ""

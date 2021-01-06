@@ -33,6 +33,7 @@ object Constant {
     const val KEY_SONG_QUALITY = "key_song_quality"
     const val KEY_MUSIC_TYPE = "key_music_type"
     const val KEY_IS_CACHE = "key_is_cache"
+    const val KEY_COVER_BITMAP = "key_cover_bitmap"
 
     // config
     const val SEARCH_SONG_PAGE_SIZE = 20//每页搜索（单曲、专辑）显示的条数

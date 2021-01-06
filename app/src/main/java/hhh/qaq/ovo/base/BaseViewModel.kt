@@ -22,22 +22,15 @@ import java.io.Serializable
  * @Description
  */
 open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
-
-    val hasNav: MutableLiveData<Boolean> = MutableLiveData()
-
-    //    private var mFragment: BaseFragment? = null
+    var isFinish = MutableLiveData<Boolean>()
+    var onBackPress = MutableLiveData<Boolean>()
     var mBundle: Bundle? = null
     private var mNavController: NavController? = null
-
     override fun id() = BR.vm
 
     open fun onBindViewModel() {
 
     }
-
-//    fun setFragment(fragment: BaseFragment?) {
-//        mFragment = fragment
-//    }
 
     fun setBundle(bundle: Bundle) {
         mBundle = bundle
@@ -63,6 +56,7 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
             }
         }
     }
+
     fun nav(f: BaseFragment?, actionId: Int, bundle: Bundle? = null) {
         f?.let {
             mNavController = NavHostFragment.findNavController(it)
@@ -81,6 +75,14 @@ open class BaseViewModel(app: Application) : AndroidViewModel(app), VariableId {
 
     fun popBackup() {
 
+    }
+
+    fun finish() {
+        isFinish.value=true
+    }
+
+    fun onBackPressed() {
+        onBackPress.value=true
     }
 
     fun startAct(clazz: Class<*>, vararg data: Pair<String, Any?>) {

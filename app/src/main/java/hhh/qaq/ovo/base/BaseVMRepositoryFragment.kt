@@ -16,19 +16,20 @@ import androidx.lifecycle.ViewModelProvider
  */
 abstract class BaseVMRepositoryFragment<VM:BaseResViewModel<*>>(@LayoutRes private val layoutResId:Int):BaseFragment() {
     protected lateinit var mViewModel:VM
-    protected var mRootView:View?=null
-    private var isNavigationViewInit:Boolean = false//为了处理Navigation每次返回都刷新生命周期的问题
+    private var mRootView:View?=null
+    protected lateinit var mBinding: ViewDataBinding
+    private var isNavigationViewInit:Boolean = false//为了处理Navigation每次返回都重走生命周期的问题
     abstract fun initViewModel(app:Application):VM
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (mRootView==null) {
 //            "onCreateView".log("BaseVMRepositoryFragment")
             val vm = initViewModel(mActivity.application)
             mViewModel = ViewModelProvider(this,BaseViewModelFactory(mActivity.application,vm))[vm::class.java]
-            val binding:ViewDataBinding = DataBindingUtil.inflate(inflater,layoutResId,container,false)
-            binding.lifecycleOwner = this
-            binding.setVariable(mViewModel.id(),mViewModel)
-            binding.executePendingBindings()
-            mRootView = binding.root
+            mBinding = DataBindingUtil.inflate(inflater,layoutResId,container,false)
+            mBinding.lifecycleOwner = this
+            mBinding.setVariable(mViewModel.id(),mViewModel)
+            mBinding.executePendingBindings()
+            mRootView = mBinding.root
         }
         return mRootView
     }

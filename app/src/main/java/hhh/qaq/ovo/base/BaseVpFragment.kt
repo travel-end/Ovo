@@ -22,7 +22,6 @@ open class BaseVpFragment<VM:BaseResViewModel<*>>(@LayoutRes layoutResId:Int,cla
         super.initView()
         viewPager2 = mRootView?.findViewById(R.id.viewPager2)
         tabLayout = mRootView?.findViewById(R.id.tabLayout)
-
     }
     open fun initVpTitle(title: Array<String>?) {
         this.vpTitles = title

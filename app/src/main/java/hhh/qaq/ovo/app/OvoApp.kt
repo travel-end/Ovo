@@ -4,6 +4,7 @@ import androidx.multidex.MultiDexApplication
 import com.danikula.videocache.HttpProxyCacheServer
 import hhh.qaq.ovo.delegate.CacheFileNameGenerator
 import hhh.qaq.ovo.utils.FileUtils
+import io.reactivex.plugins.RxJavaPlugins
 import org.litepal.LitePal
 import java.io.File
 
@@ -40,6 +41,7 @@ class OvoApp:MultiDexApplication() {
         super.onCreate()
         instances = this
         LitePal.initialize(this)
+        setRxJavaErrorHandler()
     }
     private fun newProxy(): HttpProxyCacheServer {
         return HttpProxyCacheServer
@@ -47,5 +49,10 @@ class OvoApp:MultiDexApplication() {
                 .cacheDirectory(File(FileUtils.getMusicCacheDir()!!))
                 .fileNameGenerator(CacheFileNameGenerator())
                 .build()
+    }
+    private fun setRxJavaErrorHandler() {
+        RxJavaPlugins.setErrorHandler {
+            it?.printStackTrace()
+        }
     }
 }

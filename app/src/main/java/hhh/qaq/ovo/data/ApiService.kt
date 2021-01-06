@@ -1,7 +1,10 @@
 package hhh.qaq.ovo.data
 
+import com.cyl.musicapi.netease.RecommendSongsInfo
+import com.cyl.musicapi.netease.base.NeteaseBaseData
 import hhh.qaq.ovo.constant.Constant
 import hhh.qaq.ovo.model.*
+import io.reactivex.Observable
 import retrofit2.http.*
 
 /**
@@ -15,6 +18,12 @@ interface ApiService {
      */
     @GET("search/hot")
     suspend fun getHotSearchInfo(): SearchInfo
+
+    /**
+     * 获取每日推荐歌曲（需登录）
+     */
+    @GET("recommend/songs")
+    fun getRecommendSongs(): NeteaseBaseData<RecommendSongsInfo>
 
     /**
      * 搜索歌曲：https://c.y.qq.com/soso/fcgi-bin/client_search_cp?p=2&n=2&w=周杰伦&format=json

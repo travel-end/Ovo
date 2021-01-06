@@ -1,23 +1,30 @@
 package hhh.qaq.ovo.listener
 
+import androidx.lifecycle.Observer
+import hhh.qaq.ovo.base.BaseActivity
+import hhh.qaq.ovo.base.BaseViewModel
+
 /**
  * @By Journey 2020/12/28
  * @Description
  */
 interface ViewEventListener {
     fun onEvent()
+    fun BaseViewModel.finish(baseActivity: BaseActivity) {
+        isFinish.observe(baseActivity, Observer {
+            if (it) {
+                baseActivity.finish()
+                isFinish.value = false
+            }
+        })
+    }
 
-//    fun BaseViewModel.nav(fragment: BaseFragment){
-//        hasNav.observe(fragment,Observer{
-//            if (it==true) {
-//                val nav = NavHostFragment.findNavController(it)
-//                if (bundle != null) {
-//                    nav.navigate(actionId,bundle)
-//                } else {
-//                    nav.navigate(actionId)
-//                }
-//
-//            }
-//        })
-//    }
+    fun BaseViewModel.onBackPressed(baseActivity: BaseActivity) {
+        onBackPress.observe(baseActivity, Observer {
+            if (it) {
+                baseActivity.onBackPressed()
+                onBackPress.value = false
+            }
+        })
+    }
 }

@@ -158,16 +158,17 @@
 
                 <ImageView
                     android:id="@+id/collectIv"
-                    android:layout_width="24dp"
+                    android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:onClick="@{(v)->vm.setCollectMusic(v)}"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:src="@{vm.MIsLovedMusic?@drawable/item_favorite_love:@drawable/item_favorite}" />
 
                 <ImageView
                     android:id="@+id/downloadIv"
-                    android:layout_width="24dp"
+                    android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
@@ -175,14 +176,14 @@
 
                 <ImageView
                     android:id="@+id/shareIv"
-                    android:layout_width="24dp"
+                    android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:layout_weight="1"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_share_white" />
 
                 <ImageView
-                    android:layout_width="24dp"
+                    android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:layout_weight="1"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -206,8 +207,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_16"
                 android:layout_marginStart="@dimen/dp_10"
+                android:onClick="@{()->vm.onBackPressed()}"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_arrow_left" />
+                android:src="@drawable/ic_arrow_left_white" />
 
             <LinearLayout
                 android:layout_width="match_parent"

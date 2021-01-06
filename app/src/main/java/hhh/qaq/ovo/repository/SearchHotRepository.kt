@@ -12,7 +12,7 @@ class SearchHotRepository:NetRepository() {
     suspend fun getHotSearchTag() = withContext(Dispatchers.Default){
         async {
             // TODO: 2020/12/28 数据库操作 获取数据库中的数据
-            val hotSearch = neteaseApiService.getHotSearchInfo()
+            val hotSearch = netEaseApiService.getHotSearchInfo()
             hotSearch
         }
     }.await()

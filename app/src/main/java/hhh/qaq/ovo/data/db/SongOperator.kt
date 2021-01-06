@@ -43,8 +43,16 @@ object SongOperator {
 
 
     // 获取收藏的歌曲
-    fun getCollectedMusics():MutableList<Music> {
+    fun getCollectedMusic():MutableList<Music> {
         return DaoLitePal.getMusicList(Constant.PLAYLIST_LOVE_ID)
+    }
+
+    // 更新收藏的歌曲
+    fun updateCollectMusic(music: Music?):Boolean{
+        if (music==null) return false
+        music.isLove = !music.isLove
+        DaoLitePal.saveOrUpdateMusic(music)
+        return music.isLove
     }
 
     // 获取下载的歌曲

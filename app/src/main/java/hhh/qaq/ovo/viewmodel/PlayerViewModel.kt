@@ -3,17 +3,20 @@ package hhh.qaq.ovo.viewmodel
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.view.View
+import android.widget.ImageView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
 import hhh.qaq.ovo.R
 import hhh.qaq.ovo.base.BaseViewModel
+import hhh.qaq.ovo.constant.Constant
+import hhh.qaq.ovo.data.db.SongOperator
+import hhh.qaq.ovo.event.GlobalEventBus
+import hhh.qaq.ovo.event.PlaylistEvent
 import hhh.qaq.ovo.model.Music
 import hhh.qaq.ovo.playmedia.PlayManager
-import hhh.qaq.ovo.utils.BitmapUtil
-import hhh.qaq.ovo.utils.StringUtil
-import hhh.qaq.ovo.utils.getDrawable
-import hhh.qaq.ovo.utils.getResString
+import hhh.qaq.ovo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,12 +37,13 @@ class PlayerViewModel(app: Application) : BaseViewModel(app) {
     var mPlaySeekBarProgress = ObservableField(0)
     var mPlayCurrentTextProgress = ObservableField<String>(R.string.play_time_start.getResString())
     var mSecondProgress = ObservableField(0)
-
+    var mPlayingMusic: Music? = null
     fun playOrPause() {
         PlayManager.playPause()
     }
 
     fun setPlayingMusicInfo(music: Music?) {
+        mPlayingMusic = music
         mIsMusicPlaying.set(isPlaying)
         if (music != null) {
             mMusicName.set(music.title)
@@ -84,5 +88,13 @@ class PlayerViewModel(app: Application) : BaseViewModel(app) {
     fun updatePlayProgress(progress: Int) {
         mPlaySeekBarProgress.set(progress)
         mPlayCurrentTextProgress.set(StringUtil.formatProgress(progress.toLong()))
+    }
+
+    fun setCollectMusic(v: View) {
+        val isLoving = mPlayingMusic?.isLove ?: false
+        mIsLovedMusic.set(!isLoving)
+        startCollectMusicAnimation(v as ImageView)
+        mPlayingMusic?.isLove = SongOperator.updateCollectMusic(mPlayingMusic)
+        GlobalEventBus.playListChanged.value = PlaylistEvent(Constant.PLAYLIST_LOVE_ID)
     }
 }

@@ -73,20 +73,14 @@ class PlayerService : Service() {
 
     companion object {
         private lateinit var instance: PlayerService
-        private var onPlayProgressUpdateListener: OnPlayProgressListener? = null
-        private val progressListenerList = mutableListOf<OnPlayProgressListener>()
+        private val progressListenerList = mutableListOf<OnPlayProgressListener?>()
         fun addProgressListener(listener: OnPlayProgressListener?) {
-            if (listener != null) {
-                progressListenerList.add(listener)
-            }
+            progressListenerList.add(listener)
         }
 
         fun removeProgressListener(listener: OnPlayProgressListener?) {
-            if (listener != null) {
-                progressListenerList.remove(listener)
-            }
+            progressListenerList.remove(listener)
         }
-
         fun getInstance(): PlayerService {
             return instance
         }
@@ -351,6 +345,7 @@ class PlayerService : Service() {
     // 播放在线音乐【搜索的音乐】  加入播放队列 并播放音乐
     fun play(music: Music?) {
         if (music == null) return
+        "mPlayingPos:$mPlayingPos".log("JG")
         if (mPlayingPos == -1 || mPlayQueue.size == 0) {// 当前没有正在播放的音乐
             mPlayQueue.add(music)
             mPlayingPos = 0
@@ -493,14 +488,12 @@ class PlayerService : Service() {
                 saveHistory()
                 mHistoryPos.add(mPlayingPos)
                 // 本地歌曲
-                if (music.uri != null) {
-                    if (!music.uri.isNullOrEmpty()) {
-                        if (!music.uri!!.startsWith(Constant.IS_URL_HEADER) && !FileUtils.exists(music.uri)) {
-                            checkPlayErrorTimes()
-                        } else {
-                            playErrorTimes = 0
-                            mPlayer.setDataSource(music.uri)
-                        }
+                if (!music.uri.isNullOrEmpty()) {
+                    if (!music.uri!!.startsWith(Constant.IS_URL_HEADER) && !FileUtils.exists(music.uri)) {
+                        checkPlayErrorTimes()
+                    } else {
+                        playErrorTimes = 0
+                        mPlayer.setDataSource(music.uri)
                     }
                 }
                 mediaSessionManager.updateMetaData(mPlayingMusic)
@@ -571,7 +564,7 @@ class PlayerService : Service() {
         mPlayQueue.clear()
         mHistoryPos.clear()
         mPlayQueue = SongOperator.getPlayQueue().toMutableList()
-        mPlayingPos = SpUtil.getInt(Constant.KEY_PLAY_POSITION,-1)
+        mPlayingPos = SpUtil.getInt(Constant.KEY_PLAY_POSITION, -1)
         if (mPlayingPos >= 0 && mPlayingPos < mPlayQueue.size) {
             mPlayingMusic = mPlayQueue[mPlayingPos]
             updateNotification(true)
@@ -661,17 +654,17 @@ class PlayerService : Service() {
 
     private fun notifyChange(what: String) {
         when (what) {
-            PlayConstant.META_CHANGED -> {
+            PlayConstant.META_CHANGED -> {//歌曲改变
                 GlobalEventBus.metaChanged.value = MetaChangedEvent(mPlayingMusic)
                 updateWidget(PlayConstant.META_CHANGED)
             }
-            PlayConstant.PLAY_STATE_CHANGED -> {
+            PlayConstant.PLAY_STATE_CHANGED -> {//歌曲状态改变
                 updateWidget(PlayConstant.ACTION_PLAY_PAUSE)
                 mediaSessionManager.updatePlaybackState()
                 GlobalEventBus.stateChanged.value =
                     StatusChangedEvent(isPrepared, isPlaying, percent * getDuration())
             }
-            PlayConstant.PLAY_QUEUE_CLEAR,PlayConstant.PLAY_QUEUE_CHANGE -> {
+            PlayConstant.PLAY_QUEUE_CLEAR, PlayConstant.PLAY_QUEUE_CHANGE -> {//歌单改变
                 GlobalEventBus.playListChanged.value = PlaylistEvent(Constant.PLAYLIST_QUEUE_ID)
             }
             PlayConstant.PLAY_STATE_LOADING_CHANGED -> {
@@ -801,11 +794,13 @@ class PlayerService : Service() {
                             s.percent = msg.obj as Int
                             s.notifyChange(PlayConstant.PLAY_STATE_LOADING_CHANGED)
                         }
+                        // 开始播放的bus
                         PlayConstant.PLAYER_PREPARED -> {
                             // 准备完毕可以播放
                             s.isMusicPlaying = true
                             s.updateNotification(false)
                             s.notifyChange(PlayConstant.PLAY_STATE_CHANGED)
+                            s.updatePlayProgress()
                         }
                         PlayConstant.AUDIO_FOCUS_CHANGE -> {
                             when (msg.arg1) {
@@ -920,7 +915,7 @@ class PlayerService : Service() {
             super.handleMessage(msg)
             content.get()?.let { s ->
                 progressListenerList.forEach {
-                    it.onProgressUpdate(
+                    it?.onProgressUpdate(
                         s.getCurrentPosition(),
                         s.getDuration()
                     )
@@ -991,6 +986,6 @@ class PlayerService : Service() {
     private fun removeUpdateListener() {
         mUpdateProgressHandler.removeMessages(PlayConstant.UPDATE_PROGRESS)
         mUpdateProgressHandler.removeCallbacksAndMessages(null)
-        onPlayProgressUpdateListener = null
+        progressListenerList.clear()
     }
 }

@@ -49,4 +49,8 @@ class PlayControllerViewModel(app: Application) :
         }
         mControllerAdapter.notifyDataSetChanged()
     }
+
+    fun setPlaying(playing:Boolean) {
+        mIsPlaying.set(playing)
+    }
 }

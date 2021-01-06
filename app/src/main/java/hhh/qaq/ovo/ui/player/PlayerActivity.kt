@@ -1,12 +1,12 @@
 package hhh.qaq.ovo.ui.player
 
-import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import hhh.qaq.ovo.R
 import hhh.qaq.ovo.base.BaseViewModelActivity
+import hhh.qaq.ovo.databinding.ActivityPlayerBinding
 import hhh.qaq.ovo.event.GlobalEventBus
 import hhh.qaq.ovo.listener.OnPlayProgressListener
 import hhh.qaq.ovo.playmedia.PlayManager
@@ -27,20 +27,14 @@ class PlayerActivity :
     private val coverFragment: PlayerCoverFragment = PlayerCoverFragment()
     private val lyricFragment: PlayerLyricFragment = PlayerLyricFragment()
     private val mFragments = mutableListOf<Fragment>()
-    private lateinit var mBottomOpView: LinearLayout
-    private lateinit var mDetailView: LinearLayout
-    private lateinit var mViewPager2: ViewPager2
-    private lateinit var mSeekBar: SeekBar
+    private lateinit var mPlayerBinding :ActivityPlayerBinding
     private val mPlayingMusic = PlayManager.getPlayingMusic()
     var mIsDraggingSeekBar = false
     override fun initView() {
         super.initView()
         PlayerService.addProgressListener(this)
-        mViewPager2 = findViewById(R.id.playerViewPager)
-        mBottomOpView = findViewById(R.id.bottomOpView)
-        mDetailView = findViewById(R.id.detailView)
-        mSeekBar = findViewById(R.id.progressSb)
-        mDetailView.setTranslateAnimation()
+        mPlayerBinding = mBinding as ActivityPlayerBinding
+        mPlayerBinding.detailView.setTranslateAnimation()
         initCover()
         initViewPager2()
         mViewModel.setPlayingMusicInfo(mPlayingMusic)
@@ -66,14 +60,12 @@ class PlayerActivity :
                 }
             }
         })
-        mSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        mPlayerBinding.progressSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 mIsDraggingSeekBar = true
             }
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 seekBar?.let { sb ->
                     val progress = sb.progress
@@ -82,7 +74,6 @@ class PlayerActivity :
                     mIsDraggingSeekBar = false
                 }
             }
-
         })
     }
 
@@ -90,23 +81,23 @@ class PlayerActivity :
         mFragments.clear()
         mFragments.add(coverFragment)
         mFragments.add(lyricFragment)
-        mViewPager2.apply {
+        mPlayerBinding.playerViewPager.apply {
             adapter = PlayerPagerAdapter(this@PlayerActivity, mFragments)
             offscreenPageLimit = 1
             currentItem = 0
         }
         var height = 0
-        mBottomOpView.post { height = mBottomOpView.height }
-        mViewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        mPlayerBinding.bottomOpView.post { height = mPlayerBinding.bottomOpView.height }
+        mPlayerBinding.playerViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
                 if (positionOffset <= 1 && position == 0) {
-                    mDetailView.translationY = height * positionOffset
+                    mPlayerBinding.detailView.translationY = height * positionOffset
                 } else {
-                    mDetailView.translationY = height * 1f
+                    mPlayerBinding.detailView.translationY = height * 1f
                 }
             }
         })
@@ -121,7 +112,7 @@ class PlayerActivity :
     }
 
     override fun onDestroy() {
-        "JG onDestroy".log()
+        "PlayerActivity onDestroy".log("JG")
         super.onDestroy()
         PlayerService.removeProgressListener(this)
     }

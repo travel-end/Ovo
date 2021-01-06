@@ -25,7 +25,7 @@ class MainFrgRepository:NetRepository() {
 
     suspend fun getCollectedMusics() = withContext(Dispatchers.IO){
         async {
-            SongOperator.getCollectedMusics()
+            SongOperator.getCollectedMusic()
         }
     }.await()
 

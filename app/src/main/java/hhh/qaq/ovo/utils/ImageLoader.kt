@@ -68,8 +68,8 @@ fun loadBigImageView(context: Context?, music: Music?, callBack: ((Bitmap) -> Un
     }
     Glide.with(context)
         .asBitmap()
-        .load(url ?: R.drawable.ic_default_cover)
-        .error(R.drawable.ic_default_cover)
+        .load(url ?: R.drawable.disk)
+        .error(R.drawable.disk)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into<CustomTarget<Bitmap>>(object : CustomTarget<Bitmap>() {
             override fun onLoadCleared(placeholder: Drawable?) {

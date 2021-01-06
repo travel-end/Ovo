@@ -63,6 +63,7 @@ object PlayConstant {
     const val MV_TITLE = "mv_title"
     const val VIDEO_VID = "mv_mid"
 
+
     //视频类型
     const val VIDEO_TYPE = "video_type"
 

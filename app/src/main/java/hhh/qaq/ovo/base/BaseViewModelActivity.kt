@@ -5,13 +5,14 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
+import hhh.qaq.ovo.listener.ViewEventListener
 import hhh.qaq.ovo.utils.log
 
 /**
  * @By Journey 2020/12/25
  * @Description
  */
-open class BaseViewModelActivity<VM:BaseViewModel>(@LayoutRes private val layoutResId:Int,private val clazz: Class<VM>):BaseActivity() {
+open class BaseViewModelActivity<VM:BaseViewModel>(@LayoutRes private val layoutResId:Int,private val clazz: Class<VM>):BaseActivity(),ViewEventListener {
     protected lateinit var mViewModel:VM
     protected lateinit var mBinding:ViewDataBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,12 @@ open class BaseViewModelActivity<VM:BaseViewModel>(@LayoutRes private val layout
 
     }
 
-    open fun onAction() {}
+    open fun onAction() {
+        onEvent()
+    }
+    override fun onEvent() {
+        mViewModel.finish(this)
+        mViewModel.onBackPressed(this)
+    }
 
 }

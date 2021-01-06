@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import hhh.qaq.ovo.R
 import hhh.qaq.ovo.base.BaseVMRepositoryFragment
 import hhh.qaq.ovo.constant.Constant
+import hhh.qaq.ovo.databinding.FragmentPlaycontrollerBinding
 import hhh.qaq.ovo.event.GlobalEventBus
 import hhh.qaq.ovo.listener.OnPlayProgressListener
 import hhh.qaq.ovo.playmedia.PlayManager
 import hhh.qaq.ovo.service.PlayerService
 import hhh.qaq.ovo.utils.log
 import hhh.qaq.ovo.viewmodel.PlayControllerViewModel
-import hhh.qaq.ovo.widget.PlayPauseView
 
 /**
  * @By Journey 2020/12/28
@@ -24,57 +24,27 @@ import hhh.qaq.ovo.widget.PlayPauseView
 class PlayControllerFragment :
     BaseVMRepositoryFragment<PlayControllerViewModel>(R.layout.fragment_playcontroller),
     OnPlayProgressListener {
-    private val TAG = "JG"
-    private var mControllerRv: RecyclerView? = null
-    private var mPlayPauseView: PlayPauseView? = null
+    private lateinit var mPlayControllerBinding:FragmentPlaycontrollerBinding
     override fun initViewModel(app: Application) = PlayControllerViewModel(app)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PlayerService.addProgressListener(this)
-        PlayerService.getInstance().updatePlayProgress()
     }
-
     override fun initView() {
         super.initView()
-        mControllerRv = mRootView?.findViewById(R.id.view_rv)
-        mPlayPauseView = mRootView?.findViewById(R.id.play_controller_view)
-        mControllerRv?.onFlingListener = null
+        mPlayControllerBinding = mBinding as FragmentPlaycontrollerBinding
+        mPlayControllerBinding.viewRv.onFlingListener = null
         val snap = PagerSnapHelper()
-        snap.attachToRecyclerView(mControllerRv)
-        mControllerRv?.scrollToPosition(PlayManager.position())
+        snap.attachToRecyclerView(mPlayControllerBinding.viewRv)
+        mPlayControllerBinding.viewRv.scrollToPosition(PlayManager.position())
     }
 
     override fun onAction() {
         super.onAction()
-        // 歌单改变
-        GlobalEventBus.playListChanged.observeInFragment(this, Observer {
-//            "---PlayControlFragment---PlaylistEvent---${it?.type}".log(TAG)
-            it?.let { event ->
-                if (event.type == Constant.PLAYLIST_QUEUE_ID) {
-                    mViewModel.setMusicList()
-                    mControllerRv?.scrollToPosition(PlayManager.position())
-                }
-            }
-        })
-        // 歌曲状态改变
-        GlobalEventBus.stateChanged.observeInFragment(this, Observer {
-//            "---PlayControlFragment---stateChanged---${it?.isPrepared}".log(TAG)
-            it?.let {
-                mPlayPauseView?.setLoading(!it.isPrepared)
-                mViewModel.mIsPlaying.set(it.isPlaying)
-                PlayerService.getInstance().updatePlayProgress()
-            }
-        })
-        // 换歌
-        GlobalEventBus.metaChanged.observeInFragment(this, Observer {
-//            "---PlayControlFragment---metaChanged---".log(TAG)
-            it?.let {
-                mViewModel.mIsShowController.set(it.music != null)
-                mControllerRv?.scrollToPosition(PlayManager.position())
-            }
-        })
-        mControllerRv?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        playListChangeObserve()
+        playStateChangeObserve()
+        playMusicChangeObserve()
+        mPlayControllerBinding.viewRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -89,13 +59,49 @@ class PlayControllerFragment :
         })
     }
 
+    private fun playListChangeObserve() {
+        // 歌单改变
+        GlobalEventBus.playListChanged.observeInFragment(this, Observer {
+//            "---PlayControlFragment---PlaylistEvent---${it?.type}".log(TAG)
+            it?.let { event ->
+                if (event.type == Constant.PLAYLIST_QUEUE_ID) {
+                    mViewModel.setMusicList()
+                    "当前播放位置:${PlayManager.position()}".log("JG")
+                    mPlayControllerBinding.viewRv.scrollToPosition(PlayManager.position())
+                }
+            }
+        })
+    }
+
+    private fun playStateChangeObserve() {
+        // 歌曲状态改变
+        GlobalEventBus.stateChanged.observeInFragment(this, Observer {
+//            "---PlayControlFragment---stateChanged---${it?.isPrepared}".log(TAG)
+            it?.let {
+                mPlayControllerBinding.playControllerView.setLoading(!it.isPrepared)
+                mViewModel.setPlaying(it.isPlaying)
+            }
+        })
+    }
+
+    private fun playMusicChangeObserve() {
+        // 换歌
+        GlobalEventBus.metaChanged.observeInFragment(this, Observer {
+//            "---PlayControlFragment---metaChanged---".log(TAG)
+            it?.let {
+                mViewModel.mIsShowController.set(it.music != null)// TODO 如果为null 改为默认的状态 而不是隐藏视图
+                mPlayControllerBinding.viewRv.scrollToPosition(PlayManager.position())
+            }
+        })
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         PlayerService.removeProgressListener(this)
     }
 
     override fun onProgressUpdate(position: Int, duration: Int) {
-        mPlayPauseView?.setProgress(1.0f * position / duration)
+        mPlayControllerBinding.playControllerView.setProgress(1.0f * position / duration)
     }
 
 }
